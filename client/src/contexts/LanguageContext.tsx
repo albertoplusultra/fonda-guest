@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 export type LangCode = "es" | "en" | "fr" | "de" | "it" | "pt" | "zh" | "ja" | "ar" | "ru";
 
@@ -628,9 +628,13 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<LangCode>(() => detectLang());
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   const setLang = (l: LangCode) => {
     setLangState(l);
-    document.documentElement.lang = l;
     if (typeof localStorage !== "undefined") localStorage.setItem("fonda_lang", l);
   };
 

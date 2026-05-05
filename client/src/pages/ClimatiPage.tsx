@@ -169,7 +169,10 @@ export default function ClimatiPage({ onBack, onContacto }: ClimatiPageProps) {
       <div className="mt-6 p-4" style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "0.35rem" }}>
         <p style={{ ...ps.note, margin: 0 }}>
           {(() => {
-            const [before, after] = content.tip.split(content.tipLink);
+            const idx = content.tip.indexOf(content.tipLink);
+            if (idx === -1) return content.tip;
+            const before = content.tip.slice(0, idx);
+            const after = content.tip.slice(idx + content.tipLink.length);
             return (
               <>
                 {before}

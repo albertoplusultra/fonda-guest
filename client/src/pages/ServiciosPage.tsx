@@ -2,7 +2,7 @@
  * ServiciosPage — "Noche en Sol" design
  * Servicios de la habitación: caja fuerte, Smart TV, room service, despertador, lavandería
  */
-import { Shield, Tv, Bell, AlarmClock, WashingMachine, Phone, Wind, Umbrella, Luggage, BedDouble, Baby, Car, Plug, Printer, type LucideIcon } from "lucide-react";
+import { Shield, Tv, Bell, AlarmClock, WashingMachine, Wind, Umbrella, Luggage, BedDouble, Baby, Car, Plug, Printer, type LucideIcon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageLayout from "@/components/PageLayout";
 import PageTitle from "@/components/PageTitle";
@@ -14,7 +14,6 @@ interface ServiceSection {
   iconKey: string;
   heading: string;
   paragraphs: string[];
-  cta?: string; // si tiene botón de contacto
   ctaLink?: string; // si tiene enlace a página secundaria
   linkLabel?: string; // texto del enlace a página secundaria
   inlineLink?: string; // texto exacto dentro del párrafo que se convierte en enlace a contacto
@@ -1104,23 +1103,6 @@ export default function ServiciosPage({ onBack, onContacto, onClimati }: Servici
                 })}
               </div>
 
-              {/* CTA opcional */}
-              {section.cta && (
-                <button
-                  onClick={() => { window.scrollTo({ top: 0, behavior: "instant" }); onContacto(); }}
-                  className="flex items-center gap-2 rounded-sm cursor-pointer transition-all duration-200 mt-2"
-                  style={{
-                    ...ps.actionButton,
-                    width: "auto",
-                    padding: "0.6rem 1.1rem",
-                    fontSize: "0.8rem",
-                    letterSpacing: "0.08em",
-                  }}
-                >
-                  <Phone size={13} strokeWidth={1.5} />
-                  {section.cta}
-                </button>
-              )}
               {/* Enlace a página secundaria */}
               {section.ctaLink && section.linkLabel && (
                 <button

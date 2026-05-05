@@ -11,7 +11,7 @@
  *   ── El hotel ──       Historia · Tu postal
  *   ── Madrid ──         Experiencias · Top 10
  */
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import {
   BookOpen, Clock, Phone, UtensilsCrossed,
   Sparkles, Wifi, Coffee, Wine, GlassWater,
@@ -159,12 +159,12 @@ export default function Home() {
   const { theme } = useTheme();
   const [, setLocation] = useLocation();
 
-  const skipAnimation =
-    typeof sessionStorage !== "undefined" &&
-    sessionStorage.getItem(HAS_ANIMATED_KEY) === "1";
-  if (typeof sessionStorage !== "undefined" && !skipAnimation) {
-    sessionStorage.setItem(HAS_ANIMATED_KEY, "1");
-  }
+  const [skipAnimation] = useState<boolean>(() => {
+    if (typeof sessionStorage === "undefined") return false;
+    const seen = sessionStorage.getItem(HAS_ANIMATED_KEY) === "1";
+    if (!seen) sessionStorage.setItem(HAS_ANIMATED_KEY, "1");
+    return seen;
+  });
 
   const navigate = useCallback((path: string) => {
     scrollTop();
