@@ -29,8 +29,6 @@ export default function ServiceDetail({ serviceKey, icon, onBack }: ServiceDetai
     <PageLayout onBack={onBack}>
       <PageTitle>{title}</PageTitle>
 
-      <div style={ps.goldLine} />
-
       <div
         style={{
           ...ps.body,
