@@ -2,11 +2,10 @@
  * ViajerosPage — "Noche en Sol" design
  * Viajeros memorables de La Fonda de los Príncipes
  */
-import BackButton from "@/components/BackButton";
 import { useLanguage } from "@/contexts/LanguageContext";
-import LanguageSelector from "@/components/LanguageSelector";
-
-const LOGO_BLANCO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/logo-blanco-hd_6b7412e4.png";
+import PageLayout from "@/components/PageLayout";
+import PageTitle from "@/components/PageTitle";
+import { ps } from "@/lib/pageStyles";
 
 interface ViajerosPageProps {
   onBack: () => void;
@@ -212,25 +211,25 @@ const CONTENT: Record<string, ViajerosContent> = {
         years: "1862",
         body: [
           "O primeiro viajante memorável a visitar La Fonda de los Príncipes foi Hans Christian Andersen, o escritor dinamarquês que ficou aqui em 1862, apenas um ano após a abertura do edifício.",
-          "No seu livro «Viagem por Espanha», reconhece ter ficado tão impressionado com o luxo e modernidade da Fonda como com o barulho infernal da Puerta del Sol.",
-          "Andersen procurava a alma de Madrid e ficava fascinado com o contraste entre o bulício da rua e a paz do interior.",
+          "No seu livro «Viagem a Espanha», ele reconhece ter ficado tão impressionado com o quão luxuosa e moderna era a Fonda, como com o barulho infernal da Puerta del Sol, que descreveu como um formigueiro debaixo dos seus pés. Aguadeiros, diligências, vendedores, tertúlias faziam parte do dia a dia.",
+          "Andersen procurava a alma de Madrid, entusiasmava-se ao ver a vida da praça das varandas, e fascinava-se com o contraste entre a agitação da rua e a paz do interior.",
         ],
       },
       {
         name: "Henry Blackburn",
         years: "1866",
         body: [
-          "Quatro anos depois, em 1866, Henry Blackburn, crítico de arte da London Society, ficou aqui para escrever o seu livro «Viajando pela Espanha na actualidade». Destes mesmos balcões observou amanheceres e entardeceres da Puerta del Sol.",
-          "Podes pedir um exemplar do livro na recepção.",
+          "Quatro anos depois, em 1866, Henry Blackburn, crítico de arte da London Society, ficou aqui para escrever o seu livro «Viajando em Espanha no Presente». Destas mesmas varandas, ele observou o nascer e o pôr do sol sobre a Puerta del Sol, algo que retrataria no seu livro.",
+          "Achamos curioso como o seu guia de viagem continua muito relevante. Pode descobri-lo por si mesmo, pedindo uma cópia do livro na receção.",
         ],
       },
       {
         name: "Jorge Luis Borges",
         years: "1919 – 1921",
         body: [
-          "O hóspede mais conhecido internacionalmente é o escritor e poeta argentino Jorge Luis Borges que, entre 1919 e 1921, alojado na então chamada Pensión Americana, escreveu os seus primeiros poemas ultraístas.",
-          "Podes ver uma placa comemorativa no exterior do edifício.",
-          "O quarto de Borges é o número 416, no quarto andar, em esquina com 3 varandas para as ruas Tetuán e Carmen.",
+          "O hóspede mais conhecido internacionalmente é o escritor e poeta argentino Jorge Luis Borges que, entre 1919 e 1921, hospedado na então chamada Pensión Americana, escreveu os seus primeiros poemas ultraístas.",
+          "Pode ver uma placa comemorativa no exterior do edifício.",
+          "O quarto de Borges é o número 416, no quarto andar, na esquina com 3 varandas para as ruas Tetuán e Carmen.",
         ],
       },
     ],
@@ -239,33 +238,33 @@ const CONTENT: Record<string, ViajerosContent> = {
     backLabel: "Voltar",
   },
   zh: {
-    title: "难忘的旅客",
-    subtitle: "在您到来之前，我们接待过许多其他难忘的旅客。",
+    title: "难忘的旅行者",
+    subtitle: "在您到来之前，我们还有许多其他难忘的旅行者。",
     travellers: [
       {
-        name: "汉斯·克里斯蒂安·安徒生",
+        name: "Hans Christian Andersen",
         years: "1862",
         body: [
-          "第一位难忘的旅客是丹麦作家汉斯·克里斯蒂安·安徒生，他于1862年在此住宿，距大楼开业仅一年。",
-          "在他的《西班牙之旅》一书中，他承认对拉丰达的豪华和现代感印象深刻，同时也被太阳门广场的嘈杂所震撼，他将其描述为脚下的蚁穴。",
-          "安徒生寻找马德里的灵魂，着迷于从阳台观看广场的生活，以及街道喧嚣与室内宁静之间的对比。",
+          "第一位光临拉丰达德洛斯普林西佩斯的难忘旅行者是丹麦作家汉斯·克里斯蒂安·安德森，他于1862年在此居住，当时大楼开业仅一年。",
+          "在他的书《西班牙之行》中，他承认自己对拉丰达的奢华与现代化印象深刻，同样令他难忘的是太阳门广场的喜闹声，他将其描述为脚下的蚁山。卖水人、驿车、商贩和聚会是日常生活的一部分。",
+          "安德森寻找着马德里的灵魂，他喜欢从阳台上观察广场的生活，街道的喜闹与室内的宁静形成的强烈对比令他着迷。",
         ],
       },
       {
-        name: "亨利·布莱克本",
+        name: "Henry Blackburn",
         years: "1866",
         body: [
-          "四年后的1866年，伦敦社会的艺术评论家亨利·布莱克本在此住宿，为其著作《当代西班牙游记》收集素材。他从这些阳台上观察太阳门广场的日出和日落。",
-          "您可以在前台索取该书的副本。",
+          "四年后的1866年，《伦敦社会》艺术评论家亨利·布莱克伯恩在此居住，撰写他的书《当代西班牙游记》。他从这些阳台上观察了太阳门广场的日出与日落，并将其载入书中。",
+          "他的旅行指南至今仍很具参考价値，这令我们感到好奇。您可以在前台要求一本书，亲自去发现。",
         ],
       },
       {
-        name: "豪尔赫·路易斯·博尔赫斯",
+        name: "Jorge Luis Borges",
         years: "1919 – 1921",
         body: [
-          "国际上最知名的住客是阿根廷作家和诗人豪尔赫·路易斯·博尔赫斯，他在1919年至1921年间住在当时称为美国旅馆的地方，写下了他的第一批超现实主义诗歌。",
-          "您可以在建筑外部看到一块纪念牌匾。",
-          "博尔赫斯的房间是416号，位于四楼，转角处有3个阳台俯瞰特图安街和卡门街。",
+          "国际上最知名的房客是阿根廷作家和诗人豪尔赫·路易斯·博尔赫斯，他在1919至1921年间居住于当时称为美洲废的山庄，在此写下了他第一批超现实主义诗歌。",
+          "建筑外墙上有一块纪念牌，欢迎前往参观。",
+          "博尔赫斯的房间是416号，位于四楼转角处，有三个阳台面向特尔山街和卡门街。",
         ],
       },
     ],
@@ -274,33 +273,33 @@ const CONTENT: Record<string, ViajerosContent> = {
     backLabel: "返回",
   },
   ja: {
-    title: "忘れられない旅人たち",
-    subtitle: "あなたのご到着前に、多くの忘れられない旅人たちをお迎えしました。",
+    title: "記憶に残る旅人たち",
+    subtitle: "あなたの到着前にも、多くの記憶に残る旅人たちがここに宿泊されました。",
     travellers: [
       {
-        name: "ハンス・クリスチャン・アンデルセン",
+        name: "Hans Christian Andersen",
         years: "1862",
         body: [
-          "ラ・フォンダ・デ・ロス・プリンシペスを訪れた最初の忘れられない旅人は、デンマークの作家ハンス・クリスチャン・アンデルセンで、建物が開業してわずか1年後の1862年に宿泊しました。",
-          "著書「スペイン旅行」の中で、ラ・フォンダの豪華さと近代性に感銘を受けたと同時に、プエルタ・デル・ソルの騒音にも圧倒されたと述べています。",
-          "アンデルセンはマドリードの魂を求め、バルコニーから広場の生活を眺めることに魅了されました。",
+          "La Fonda de los Príncipesを訪れた最初の記憶に残る旅人は、デンマークの作家ハンス・クリスチャン・アンデルセンです。彼は建物の開業からわずか1年後の1862年にここに滞在しました。",
+          "彼の著書『スペイン紀行』の中で、彼はフォンダの豪華さと現代性に深く感動したことを認めており、同時にプエルタ・デル・ソルの地獄のような騒々しさにも言及しています。彼はそこを足の下の處のような場所と表現しました。",
+          "アンデルセンはマドリードの魂を求め、バルコニーから広場の生活を見るのを心から楽しみ、街の喧騒と内部の静けさの対比に魅了されていました。",
         ],
       },
       {
-        name: "ヘンリー・ブラックバーン",
+        name: "Henry Blackburn",
         years: "1866",
         body: [
-          "4年後の1866年、ロンドン・ソサエティの美術評論家ヘンリー・ブラックバーンが著書「現代スペイン旅行」執筆のためここに宿泊しました。まさにこれらのバルコニーからプエルタ・デル・ソルの日の出と日没を観察しました。",
-          "フロントで本のコピーをお求めいただけます。",
+          "4年後の1866年、『ロンドン・ソサエティ』の美術評論家ヘンリー・ブラックバーンがここに宿泊し、著書『現代スペイン旅行』を執筆しました。まさにこのバルコニーから、彼はプエルタ・デル・ソルの日の出没を观察し、それを作品に記しました。",
+          "彼の旅行ガイドが今も役立つことに私たちは興味を感じます。フロントで本のコピーをお申し付けいただけます。",
         ],
       },
       {
-        name: "ホルヘ・ルイス・ボルヘス",
+        name: "Jorge Luis Borges",
         years: "1919 – 1921",
         body: [
-          "国際的に最も知られているゲストは、アルゼンチンの作家・詩人ホルヘ・ルイス・ボルヘスで、1919年から1921年にかけて当時ペンシオン・アメリカーナと呼ばれていたこの場所に滞在し、最初のウルトライスタ詩を書きました。",
-          "建物の外に記念プレートをご覧いただけます。",
-          "ボルヘスの部屋は416号室、4階の角部屋で、テトゥアン通りとカルメン通りに面した3つのバルコニーがあります。",
+          "国際的に最も有名な宿泊客は、アルゼンチンの作家・詞人ホルヘ・ルイス・ボルヘスです。彼は1919年から1921年の間、当時「ペンシオン・アメリカーナ」と呼ばれていたこの場所に宿泊し、最初の超現実主義詩を書きました。",
+          "建物の外壁に記念プレートがございます。",
+          "ボルヘスの部屋は416号、四階の角部屋で、テトゥアン街とカルメン街に面した3つのバルコニーがあります。",
         ],
       },
     ],
@@ -310,233 +309,108 @@ const CONTENT: Record<string, ViajerosContent> = {
   },
   ar: {
     title: "مسافرون لا يُنسون",
-    subtitle: "قبل وصولك، استقبلنا العديد من المسافرين الذين لا يُنسون.",
+    subtitle: "قبل وصولك، استضاف فندقنا كثيرين من المسافرين الذين لا يُنسون.",
     travellers: [
       {
-        name: "هانس كريستيان أندرسن",
+        name: "Hans Christian Andersen",
         years: "1862",
         body: [
-          "أول مسافر لا يُنسى زار لا فوندا دي لوس برينسيبيس هو الكاتب الدنماركي هانس كريستيان أندرسن، الذي أقام هنا عام 1862، بعد عام واحد فقط من افتتاح المبنى.",
-          "في كتابه «رحلة إلى إسبانيا»، يعترف بأنه أُعجب بفخامة وحداثة لا فوندا بقدر ما أُذهل بضجيج بويرتا ديل سول الجهنمي.",
-          "كان أندرسن يبحث عن روح مدريد، وكان مفتوناً بالتناقض بين صخب الشارع وهدوء الداخل.",
+          "كان أول مسافر لا يُنسى زار لا فوندا دي لوس برينسيبيس هو الكاتب الدنماركي هانز كريستيان أندرسن، الذي أقام هنا عام 1862، بعد عام واحد فقط من افتتاح المبنى.",
+          "في كتابه «رحلة في إسبانيا»، يعترف بأنه أُعجب بروعة الفوندا وحداثتها، كما أذهله الضجيج الهائل لبويرتا ديل سول، وصفها بأنها خلية نمل تحت قدميه.",
+          "كان أندرسن يبحث عن روح مدريد، وكان يستمتع بمشاهدة حياة الميدان من الشرفات، وأحره التناقض بين صخب الشارع وسكينة الداخل.",
         ],
       },
       {
-        name: "هنري بلاكبيرن",
+        name: "Henry Blackburn",
         years: "1866",
         body: [
-          "بعد أربع سنوات، في عام 1866، أقام هنري بلاكبيرن، ناقد فني في لندن سوسايتي، هنا لكتابة كتابه «السفر في إسبانيا اليوم». من هذه الشرفات بالذات راقب شروق الشمس وغروبها على بويرتا ديل سول.",
-          "يمكنك طلب نسخة من الكتاب في مكتب الاستقبال.",
+          "بعد أربعة أعوام، في عام 1866، أقام هنا هنري بلاكبيرن، ناقد فني في مجلة لندن سوسايتي، ليكتب كتابه «السفر في إسبانيا اليوم». من هذه الشرفات بالذات، رصد شروق وغروب بويرتا ديل سول.",
+          "يثيرنا الفضول كيف لا يزال دليله السياحي ذا قيمة. يمكنك طلب نسخة من الكتاب في مكتب الاستقبال.",
         ],
       },
       {
-        name: "خورخي لويس بورخيس",
+        name: "Jorge Luis Borges",
         years: "1919 – 1921",
         body: [
-          "أشهر نزيل على المستوى الدولي هو الكاتب والشاعر الأرجنتيني خورخي لويس بورخيس الذي، بين عامَي 1919 و1921، مقيماً في ما كان يُعرف آنذاك ببنسيون أمريكانا، كتب قصائده الأولى.",
+          "أشهر ضيف على الصعيد الدولي هو الكاتب والشاعر الأرجنتيني خورخي لويس بورخيس، الذي أقام هنا بين عامي 1919 و 1921 في ما كان يُعرف آنذاك باسم بينسيون أميريكانا، وكتب فيه قصائده الأولى.",
           "يمكنك رؤية لوحة تذكارية على واجهة المبنى.",
-          "غرفة بورخيس هي رقم 416، في الطابق الرابع، في الزاوية مع 3 شرفات تطل على شارعَي تيتوان وكارمن.",
+          "غرفة بورخيس هي رقم 416، في الطابق الرابع، في الزاوية، مع 3 شرفات تطل على شارعي تيتوان وكارمن.",
         ],
       },
     ],
     youLabel: "أنت",
-    youBody: "والآن، أنت.",
+    youBody: "والآن، دورك.",
     backLabel: "رجوع",
   },
   ru: {
     title: "Незабываемые путешественники",
-    subtitle: "До вашего приезда у нас было много других незабываемых путешественников.",
+    subtitle: "До вашего приезда здесь останавливались многие другие незабываемые путешественники.",
     travellers: [
       {
-        name: "Ханс Кристиан Андерсен",
+        name: "Hans Christian Andersen",
         years: "1862",
         body: [
-          "Первым незабываемым путешественником, посетившим La Fonda de los Príncipes, был датский писатель Ханс Кристиан Андерсен, остановившийся здесь в 1862 году, всего через год после открытия здания.",
-          "В своей книге «Путешествие по Испании» он признаёт, что был так же поражён роскошью и современностью La Fonda, как и адским шумом Пуэрта-дель-Соль.",
-          "Андерсен искал душу Мадрида и был очарован контрастом между суетой улицы и покоем внутри.",
+          "Первым незабываемым путешественником, посетившим La Fonda de los Príncipes, был датский писатель Ганс Христиан Андерсен, остановившийся здесь в 1862 году, всего через год после открытия здания.",
+          "В своей книге «Путешествие по Испании» он признаёт, что его поразила как роскошь и современность Фонды, так и адский шум Пуэрта-дель-Соль, который он описал как муравейник под ногами.",
+          "Андерсен искал душу Мадрида, любил наблюдать за жизнью площади с балконов и был очарован контрастом между уличным шумом и покоем внутри.",
         ],
       },
       {
-        name: "Генри Блэкберн",
+        name: "Henry Blackburn",
         years: "1866",
         body: [
-          "Четыре года спустя, в 1866 году, Генри Блэкберн, художественный критик London Society, остановился здесь, чтобы написать книгу «Путешествие по современной Испании». С этих самых балконов он наблюдал рассветы и закаты над Пуэрта-дель-Соль.",
-          "Вы можете попросить копию книги на стойке регистрации.",
+          "Четыре года спустя, в 1866 году, здесь остановился Хенри Блэкберн, искусствовед журнала London Society, чтобы написать книгу «Путешествие по современной Испании». Именно с этих балконов он наблюдал рассветы и закаты над Пуэрта-дель-Соль, что и отразил в своей книге.",
+          "Нас удивляет, насколько его путеводитель актуален и сегодня. Вы можете попросить экземпляр книги на ресепшн.",
         ],
       },
       {
-        name: "Хорхе Луис Борхес",
+        name: "Jorge Luis Borges",
         years: "1919 – 1921",
         body: [
-          "Наиболее известным на международном уровне гостем является аргентинский писатель и поэт Хорхе Луис Борхес, который в 1919–1921 годах, проживая в тогдашней Pensión Americana, написал свои первые ультраистские стихи.",
-          "На внешней стороне здания можно увидеть мемориальную доску.",
-          "Комната Борхеса — номер 416, на четвёртом этаже, угловая, с 3 балконами, выходящими на улицы Тетуан и Кармен.",
+          "Наиболее известный в мире гость — аргентинский писатель и поэт Хорхе Луис Борхес, который в 1919–1921 годах, проживая в тогдашней Пенсион Американа, написал здесь свои первые ультраистские стихи.",
+          "На внешней стене здания есть мемориальная табличка.",
+          "Номер комнаты Борхеса — 416, на четвёртом этаже, угловой номер с 3 балконами, выходящими на улицы Тетуан и Кармен.",
         ],
       },
     ],
     youLabel: "Вы",
-    youBody: "А теперь — вы.",
+    youBody: "И теперь — вы.",
     backLabel: "Назад",
   },
 };
 
-// ── Component ─────────────────────────────────────────────────────────────────
-
-export default function ViajerosPage({ onBack }: ViajerosPageProps) {
+const ViajerosPage: React.FC<ViajerosPageProps> = ({ onBack }) => {
   const { lang } = useLanguage();
-  const c = CONTENT[lang] ?? CONTENT.es;
-
-  const labelStyle: React.CSSProperties = {
-    fontFamily: "'DM Sans', sans-serif",
-    fontWeight: 400,
-    fontSize: "0.7rem",
-    letterSpacing: "0.1em",
-    textTransform: "uppercase" as const,
-  };
+  const content = CONTENT[lang] || CONTENT.es;
 
   return (
-    <div
-      className="flex flex-col"
-      style={{ background: "oklch(0.08 0 0)", maxWidth: 480, margin: "0 auto", minHeight: "100dvh" }}
-    >
-      {/* Header */}
-      <header
-        className="flex items-center justify-between px-5 pt-8 pb-4"
-        style={{ borderBottom: "1px solid oklch(0.16 0.01 72)" }}
-      >
-        <BackButton onClick={onBack} />
+    <PageLayout onBack={onBack}>
+      <PageTitle>{content.title}</PageTitle>
+      <p style={{ ...ps.body, marginBottom: "3rem" }}>
+        {content.subtitle}
+      </p>
 
-        <img
-          src={LOGO_BLANCO}
-          alt="La Fonda de los Príncipes"
-          style={{ height: 32, opacity: 0.85 }}
-        />
-
-        <LanguageSelector />
-      </header>
-
-      {/* Content */}
-      <main className="flex-1 px-6 pt-10 pb-14">
-        {/* Title */}
-        <h1
-          className="mb-3"
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontWeight: 300,
-            fontSize: "clamp(1.8rem, 6vw, 2.4rem)",
-            color: "oklch(0.96 0.025 85)",
-            lineHeight: 1.15,
-          }}
-        >
-          {c.title}
-        </h1>
-
-        {/* Gold divider */}
-        <div
-          className="mb-7"
-          style={{
-            height: 1,
-            background: "linear-gradient(90deg, var(--gold), transparent)",
-            width: "60%",
-          }}
-        />
-
-        {/* Subtitle */}
-        <p
-          className="mb-10"
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontStyle: "italic",
-            fontWeight: 400,
-            fontSize: "clamp(1rem, 3.5vw, 1.1rem)",
-            color: "oklch(0.72 0.02 85)",
-            lineHeight: 1.7,
-          }}
-        >
-          {c.subtitle}
-        </p>
-
-        {/* Travellers */}
-        <div className="flex flex-col gap-10">
-          {c.travellers.map((traveller, idx) => (
-            <div key={idx}>
-              {/* Name & years */}
-              <div className="flex items-baseline gap-3 mb-4">
-                <h2
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontWeight: 500,
-                    fontSize: "clamp(1.2rem, 4vw, 1.4rem)",
-                    color: "oklch(0.92 0.03 85)",
-                    lineHeight: 1.2,
-                  }}
-                >
-                  {traveller.name}
-                </h2>
-                <span
-                  style={{
-                    ...labelStyle,
-                    color: "var(--gold)",
-                    opacity: 0.8,
-                    fontSize: "0.65rem",
-                  }}
-                >
-                  {traveller.years}
-                </span>
-              </div>
-
-              {/* Gold accent line */}
-              <div
-                className="mb-4"
-                style={{
-                  height: 1,
-                  background: "linear-gradient(90deg, var(--gold), transparent)",
-                  width: "40%",
-                  opacity: 0.5,
-                }}
-              />
-
-              {/* Body paragraphs */}
-              <div className="flex flex-col gap-4">
-                {traveller.body.map((p, pi) => (
-                  <p
-                    key={pi}
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontWeight: 300,
-                      fontSize: "0.93rem",
-                      color: "oklch(0.68 0.015 85)",
-                      lineHeight: 1.85,
-                    }}
-                  >
-                    {p}
-                  </p>
-                ))}
-              </div>
-            </div>
+      {content.travellers.map((traveller, index) => (
+        <div key={index} style={{ marginBottom: "3rem" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+            <h2 style={{ ...ps.title, fontSize: "1.5rem", marginBottom: "0.5rem" }}>{traveller.name}</h2>
+            <p style={{ ...ps.muted, flexShrink: 0, paddingLeft: "1rem" }}>{traveller.years}</p>
+          </div>
+          <div style={ps.goldLine} />
+          {traveller.body.map((paragraph, pIndex) => (
+            <p key={pIndex} style={{ ...ps.body, marginBottom: "1rem" }}>
+              {paragraph}
+            </p>
           ))}
         </div>
+      ))}
 
-        {/* You section */}
-        <div
-          className="mt-12 pt-8"
-          style={{ borderTop: "1px solid oklch(0.16 0.01 72)" }}
-        >
-          <p
-            style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontStyle: "italic",
-              fontWeight: 400,
-              fontSize: "clamp(1.3rem, 4.5vw, 1.6rem)",
-              color: "var(--gold)",
-              lineHeight: 1.4,
-              textAlign: "center",
-            }}
-          >
-            {c.youBody}
-          </p>
-        </div>
-      </main>
-    </div>
+      <div style={{ marginTop: "1rem", textAlign: "center" }}>
+        <p style={{ ...ps.body, fontSize: "1.5rem", marginBottom: "0.25rem" }}>{content.youBody}</p>
+        <p style={ps.muted}>{content.youLabel}</p>
+      </div>
+    </PageLayout>
   );
-}
+};
+
+export default ViajerosPage;

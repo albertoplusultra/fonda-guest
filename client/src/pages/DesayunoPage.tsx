@@ -3,11 +3,12 @@
  * Buffet de desayuno de La Fonda de los Príncipes
  * Horario: 7:00 – 10:30 | Precio: 25 € / persona
  */
-import BackButton from "@/components/BackButton";
 import { useLanguage } from "@/contexts/LanguageContext";
-import LanguageSelector from "@/components/LanguageSelector";
-
-const LOGO_BLANCO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/logo-blanco-hd_6b7412e4.png";
+import PageLayout from "@/components/PageLayout";
+import PageTitle from "@/components/PageTitle";
+import InfoCard from "@/components/InfoCard";
+import SectionLabel from "@/components/SectionLabel";
+import { ps } from "@/lib/pageStyles";
 
 interface DesayunoPageProps {
   onBack: () => void;
@@ -166,8 +167,8 @@ const CONTENT: Record<string, DesayunoContent> = {
     menuTitle: "Il nostro buffet",
     sections: [
       { title: "Piatti caldi", items: ["Uova strapazzate", "Uova in camicia", "Uova al tegamino", "Frittata di patate", "Frittata francese su richiesta", "Bacon", "Funghi saltati", "Pomodori arrostiti", "Fagioli al forno", "Patate"] },
-      { title: "Salumi iberici", items: ["Prosciutto Iberico di Guijuelo DOP", "Lonza Iberica dell'Estremadura DOP", "Salchichón Iberico di Jabugo DOP", "Chorizo Iberico di Los Pedroches DOP", "Fuet artigianale del Delta dell'Ebro"] },
-      { title: "Affettati cotti", items: ["Tacchino (senza additivi)", "Prosciutto cotto (senza additivi)"] },
+      { title: "Salumi iberici", items: ["Prosciutto Iberico di Guijuelo DOP", "Lonza Iberica dell'Estremadura DOP", "Salchichón Iberico di Jabugo DOP", "Chorizo Iberico de Los Pedroches DOP", "Fuet artigianale del Delta dell'Ebro"] },
+      { title: "Affettati", items: ["Tacchino (senza additivi)", "Prosciutto cotto (senza additivi)"] },
       { title: "Formaggi", items: ["Formaggio fresco", "Havarti", "Idiazabal", "Payoyo", "Tetilla", "Brie", "Comté"] },
       { title: "Frutta", items: ["Ananas", "Melone", "Anguria", "Kiwi", "Arancia", "Pompelmo", "Fragole", "Banana", "Mela", "Avocado", "Cotogna"] },
       { title: "Succhi", items: ["Succo d'arancia fresco", "Succo Detox"] },
@@ -185,7 +186,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "Horário",
     scheduleRows: [
       { days: "Seg – Sex",             time: "7h00 – 10h30" },
-      { days: "Sáb, Dom e feriados",  time: "7h00 – 11h00" },
+      { days: "Sáb, Dom e feriados", time: "7h00 – 11h00" },
     ],
     priceLabel: "Preço",
     price: "25 €",
@@ -214,7 +215,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "时间",
     scheduleRows: [
       { days: "周一至周五",   time: "7:00 – 10:30" },
-      { days: "周六/周日/假日", time: "7:00 – 11:00" },
+      { days: "周六、日及节假日",   time: "7:00 – 11:00" },
     ],
     priceLabel: "价格",
     price: "25 €",
@@ -243,7 +244,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "時間",
     scheduleRows: [
       { days: "月曜〜金曜",   time: "7:00 – 10:30" },
-      { days: "土/日/祝日",     time: "7:00 – 11:00" },
+      { days: "土・日・祝日",       time: "7:00 – 11:00" },
     ],
     priceLabel: "料金",
     price: "25 €",
@@ -272,7 +273,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "الوقت",
     scheduleRows: [
       { days: "الإثنين – الجمعة",  time: "7:00 – 10:30" },
-      { days: "سبت/أحد/عطل",       time: "7:00 – 11:00" },
+      { days: "السبت والأحد والعطل", time: "7:00 – 11:00" },
     ],
     priceLabel: "السعر",
     price: "25 €",
@@ -301,7 +302,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "Время",
     scheduleRows: [
       { days: "Пн – Пт",           time: "7:00 – 10:30" },
-      { days: "Сб/Вс/праздники",  time: "7:00 – 11:00" },
+      { days: "Сб, Вс и праздники", time: "7:00 – 11:00" },
     ],
     priceLabel: "Цена",
     price: "25 €",
@@ -334,147 +335,78 @@ export default function DesayunoPage({ onBack }: DesayunoPageProps) {
   const lang = FALLBACK_LANGS.includes(langCtx) ? langCtx : "en";
   const c = CONTENT[lang] ?? CONTENT["en"];
 
-  const isRtl = lang === "ar";
-
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "oklch(0.08 0 0)", maxWidth: 480, margin: "0 auto" }}
-      dir={isRtl ? "rtl" : "ltr"}
-    >
-      {/* Header */}
-      <header
-        className="flex items-center justify-between px-5 pt-8 pb-4"
-        style={{ borderBottom: "1px solid oklch(0.16 0.01 72)" }}
-      >
-        <BackButton onClick={onBack} />
+    <PageLayout onBack={onBack}>
+      <PageTitle>{c.title}</PageTitle>
 
-        <img
-          src={LOGO_BLANCO}
-          alt="La Fonda de los Príncipes"
-          className="h-8"
-          style={{ opacity: 0.85 }}
-        />
-
-        <LanguageSelector />
-      </header>
-
-      {/* Content */}
-      <main className="flex-1 px-6 pt-10 pb-14">
-
-        {/* Title */}
-        <h1
-          className="mb-4"
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontWeight: 300,
-            fontSize: "clamp(1.8rem, 6vw, 2.4rem)",
-            color: "oklch(0.96 0.025 85)",
-            lineHeight: 1.15,
-            letterSpacing: "-0.01em",
-          }}
-        >
-          {c.title}
-        </h1>
-
-        {/* Gold divider */}
-        <div
-          className="mb-7"
-          style={{ height: 1, background: "linear-gradient(90deg, var(--gold), transparent)", width: "60%" }}
-        />
-
-        {/* Schedule block */}
-        <div
-          className="mb-4 px-4 py-4 rounded-sm"
-          style={{ background: "oklch(0.11 0 0)", border: "1px solid oklch(0.20 0.012 72)" }}
-        >
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.58rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "oklch(0.45 0.01 85)" }}>
-            {c.scheduleLabel}
-          </span>
-          <div className="flex flex-col mt-2" style={{ gap: 0 }}>
-            {c.scheduleRows.map((row, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between"
-                style={{
-                  paddingTop: "0.55rem",
-                  paddingBottom: "0.55rem",
-                  borderTop: i > 0 ? "1px solid oklch(0.16 0.01 72)" : undefined,
-                }}
-              >
-                <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.82rem", color: "oklch(0.62 0.012 85)" }}>
-                  {row.days}
-                </span>
-                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: "1.05rem", color: "var(--gold)", letterSpacing: "0.02em" }}>
-                  {row.time}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Price card */}
-        <div
-          className="mb-8 px-4 py-4 rounded-sm flex items-center justify-between"
-          style={{ background: "oklch(0.11 0 0)", border: "1px solid oklch(0.20 0.012 72)" }}
-        >
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.58rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "oklch(0.45 0.01 85)" }}>
-            {c.priceLabel}
-          </span>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.25rem", fontWeight: 400, color: "var(--gold)", letterSpacing: "0.02em" }}>
-            {c.price}
-          </span>
-        </div>
-
-        {/* Menu title */}
-        <h2
-          className="mb-6"
-          style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, fontSize: "1.4rem", color: "oklch(0.75 0.02 85)", letterSpacing: "0.02em" }}
-        >
-          {c.menuTitle}
-        </h2>
-
-        {/* Menu sections */}
-        <div className="flex flex-col gap-7">
-          {c.sections.map((section) => (
-            <div key={section.title}>
-              <h3
-                className="mb-3"
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontWeight: 500,
-                  fontSize: "0.65rem",
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: "var(--gold)",
-                  opacity: 0.85,
-                }}
-              >
-                {section.title}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {section.items.map((item) => (
-                  <span
-                    key={item}
-                    className="px-3 py-1 rounded-sm"
-                    style={{
-                      background: "oklch(0.12 0 0)",
-                      border: "1px solid oklch(0.18 0.01 72)",
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontWeight: 300,
-                      fontSize: "0.8rem",
-                      color: "oklch(0.72 0.015 85)",
-                      lineHeight: 1.4,
-                    }}
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
+      <InfoCard className="mb-8" style={{ marginTop: "1.5rem" }}>
+        {/* Horario */}
+        <span style={{...ps.muted, fontWeight: 300, fontSize: '0.82rem', letterSpacing: '0.14em', textTransform: 'uppercase'}}>
+          {c.scheduleLabel}
+        </span>
+        <div className="flex flex-col mt-2" style={{ gap: 0 }}>
+          {c.scheduleRows.map((row, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between"
+              style={{
+                paddingTop: "0.55rem",
+                paddingBottom: "0.55rem",
+                borderTop: i > 0 ? "1px solid var(--border)" : undefined,
+              }}
+            >
+              <span style={{...ps.muted, fontWeight: 300, fontSize: '0.82rem'}}>
+                {row.days}
+              </span>
+              <span style={ps.menuPrice}>
+                {row.time}
+              </span>
             </div>
           ))}
         </div>
-      </main>
-    </div>
+        {/* Separador */}
+        <div style={{ borderTop: "1px solid var(--border)", marginTop: 0, paddingTop: "0.55rem", paddingBottom: "0.55rem" }} className="flex items-center justify-between">
+          <span style={{...ps.muted, fontWeight: 300, fontSize: '0.82rem'}}>
+            {c.priceLabel}
+          </span>
+          <span style={ps.menuPrice}>
+            {c.price}
+          </span>
+        </div>
+      </InfoCard>
+
+      <h2
+        className="mb-6"
+        style={{ ...ps.title, fontSize: "1.4rem", color: "var(--muted-foreground)", letterSpacing: "0.02em" }}
+      >
+        {c.menuTitle}
+      </h2>
+
+      <div className="flex flex-col gap-7">
+        {c.sections.map((section) => (
+          <div key={section.title}>
+            <SectionLabel style={{opacity: 0.85, fontSize: '0.8rem'}}>{section.title}</SectionLabel>
+            <div className="flex flex-wrap gap-2">
+              {section.items.map((item) => (
+                <span
+                  key={item}
+                  className="px-3 py-1 rounded-sm"
+                  style={{
+                    ...ps.card,
+                    padding: '0.25rem 0.75rem',
+                    ...ps.muted,
+                    fontWeight: 300,
+                    fontSize: "0.8rem",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </PageLayout>
   );
 }

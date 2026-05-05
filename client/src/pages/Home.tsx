@@ -11,32 +11,49 @@
  *   ── El hotel ──       Historia · Tu postal
  *   ── Madrid ──         Experiencias · Top 10
  */
-import { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import {
   BookOpen, Clock, Phone, UtensilsCrossed,
   Sparkles, Wifi, Coffee, Wine, GlassWater,
-  Users, Bell, List, Mail, Leaf, Train,
+  Bell, List, Mail, Leaf, Train, Shield,
+  Moon, Sun,
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import LanguageSelector from "@/components/LanguageSelector";
-import ServiceDetail from "@/pages/ServiceDetail";
-import HistoriaPage from "@/pages/HistoriaPage";
-import ViajerosPage from "@/pages/ViajerosPage";
-import CampanadasPage from "@/pages/CampanadasPage";
-import ContactoPage from "@/pages/ContactoPage";
-import DesayunoPage from "@/pages/DesayunoPage";
-import WifiPage from "@/pages/WifiPage";
-import RestaurantePage from "@/pages/RestaurantePage";
-import MinibarPage from "@/pages/MinibarPage";
-import BarPage from "@/pages/BarPage";
-import HorariosPage from "@/pages/HorariosPage";
-import Top10Page from "@/pages/Top10Page";
-import PostalPage from "@/pages/PostalPage";
-import SostenibilidadPage from "@/pages/SostenibilidadPage";
-import ServicioHabitacionesPage from "@/pages/ServicioHabitacionesPage";
-import TransportePage from "@/pages/TransportePage";
+import { useLocation } from "wouter";
+
+/** Toggle de tema con el mismo ancho/estilo que el LanguageSelector trigger */
+function ThemeToggleWide() {
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === "dark";
+  return (
+    <button
+      onClick={toggleTheme}
+      aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+      className="flex items-center gap-1.5 px-2 py-1.5 rounded-sm text-xs font-medium tracking-widest uppercase transition-all duration-200"
+      style={{
+        fontFamily: "'DM Sans', sans-serif",
+        letterSpacing: "0.12em",
+        color: "oklch(0.65 0.02 85)",
+        background: "transparent",
+        border: "none",
+        cursor: "pointer",
+        width: "100%",
+        justifyContent: "flex-start",
+      }}
+    >
+      {isDark
+        ? <Sun  size={14} strokeWidth={1.5} style={{ color: "oklch(0.65 0.02 85)", flexShrink: 0 }} />
+        : <Moon size={14} strokeWidth={1.5} style={{ color: "oklch(0.65 0.02 85)", flexShrink: 0 }} />
+      }
+
+    </button>
+  );
+}
 
 const LOGO_BLANCO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/logo-blanco-hd_6b7412e4.png";
+const LOGO_AZUL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/LAFONDADELOSPRINCIPES-LOGOPRINCIPAL-AZUL_aa984dcf.webp";
 
 // ── Service definitions ───────────────────────────────────────────────────────
 
@@ -55,9 +72,9 @@ const SERVICE_GROUPS = [
   {
     categoryKey: "tuhabitacion" as const,
     services: [
-      { key: "minibar",       icon: <Wine  size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
-      { key: "sostenibilidad", icon: <Leaf  size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
-      { key: "servicio",       icon: <Bell  size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
+      { key: "minibar",   icon: <Wine   size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
+      { key: "servicios", icon: <Shield size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
+      { key: "servicio",  icon: <Bell   size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
     ],
   },
   {
@@ -71,8 +88,9 @@ const SERVICE_GROUPS = [
   {
     categoryKey: "hotel" as const,
     services: [
-      { key: "historia", icon: <BookOpen size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
-      { key: "postal",   icon: <Mail     size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
+      { key: "historia",       icon: <BookOpen size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
+      { key: "postal",         icon: <Mail     size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
+      { key: "sostenibilidad", icon: <Leaf     size={ICON_SIZE} strokeWidth={ICON_STROKE} /> },
     ],
   },
   {
@@ -86,17 +104,7 @@ const SERVICE_GROUPS = [
 ];
 
 const ALL_SERVICES = SERVICE_GROUPS.flatMap((g) => g.services);
-
-// ── Navigation state types ────────────────────────────────────────────────────
-
-type Page = "home" | "service" | "historia" | "viajeros" | "campanadas" | "contacto" | "desayuno" | "wifi" | "restaurante" | "minibar" | "bar" | "horarios" | "top10" | "postal" | "sostenibilidad" | "servicio" | "transporte";
-
-interface NavState {
-  page: Page;
-  serviceKey?: string;
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Helpers───────────────────────────────────────────────────────
 
 const HAS_ANIMATED_KEY = "fonda_tiles_animated";
 
@@ -104,25 +112,26 @@ function scrollTop() {
   window.scrollTo({ top: 0, behavior: "instant" });
 }
 
-function getTarget(key: string): NavState {
-  const map: Record<string, Page> = {
-    historia:    "historia",
-    contacto:    "contacto",
-    desayuno:    "desayuno",
-    wifi:        "wifi",
-    restaurante: "restaurante",
-    minibar:     "minibar",
-    bar:         "bar",
-    horarios:    "horarios",
-    viajeros:    "viajeros",
-    campanadas:  "campanadas",
-    top10:          "top10",
-    postal:         "postal",
-    sostenibilidad: "sostenibilidad",
-    servicio:       "servicio",
-    transporte:     "transporte",
+function getPath(key: string): string {
+  const map: Record<string, string> = {
+    historia:    "/historia",
+    contacto:    "/contacto",
+    desayuno:    "/desayuno",
+    wifi:        "/wifi",
+    restaurante: "/restaurante",
+    minibar:     "/minibar",
+    bar:         "/bar",
+    horarios:    "/horarios",
+    viajeros:    "/viajeros",
+    campanadas:  "/campanadas",
+    top10:          "/top10",
+    postal:         "/postal",
+    sostenibilidad: "/sostenibilidad",
+    servicios:      "/servicios",
+    servicio:       "/servicio",
+    transporte:     "/transporte",
   };
-  return map[key] ? { page: map[key] } : { page: "service", serviceKey: key };
+  return map[key] ?? `/experiencias/${key}`;
 }
 
 // ── Styles ────────────────────────────────────────────────────────────────────
@@ -140,15 +149,15 @@ const CATEGORY_LABEL_STYLE: React.CSSProperties = {
 const CATEGORY_LINE_STYLE: React.CSSProperties = {
   flex: 1,
   height: 1,
-  background: "linear-gradient(90deg, oklch(0.40 0.025 72 / 0.5), transparent)",
+  background: "linear-gradient(90deg, var(--gold-dim), transparent)",
 };
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function Home() {
   const { t } = useLanguage();
-
-  const [nav, setNav] = useState<NavState>({ page: "home" });
+  const { theme } = useTheme();
+  const [, setLocation] = useLocation();
 
   const skipAnimation =
     typeof sessionStorage !== "undefined" &&
@@ -157,56 +166,10 @@ export default function Home() {
     sessionStorage.setItem(HAS_ANIMATED_KEY, "1");
   }
 
-  const navigate = useCallback((next: NavState) => {
-    window.history.pushState(next, "");
+  const navigate = useCallback((path: string) => {
     scrollTop();
-    setNav(next);
-  }, []);
-
-  const goBack = useCallback(() => {
-    window.history.back();
-  }, []);
-
-  useEffect(() => {
-    window.history.replaceState({ page: "home" } as NavState, "");
-    const onPopState = (e: PopStateEvent) => {
-      const state: NavState = e.state ?? { page: "home" };
-      scrollTop();
-      setNav(state);
-    };
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, []);
-
-  // ── Render correct page ────────────────────────────────────────────────────
-
-  if (nav.page === "minibar")     return <MinibarPage onBack={goBack} />;
-  if (nav.page === "bar")         return <BarPage onBack={goBack} />;
-  if (nav.page === "restaurante") return <RestaurantePage onBack={goBack} />;
-  if (nav.page === "desayuno")    return <DesayunoPage onBack={goBack} />;
-  if (nav.page === "wifi")        return <WifiPage onBack={goBack} />;
-  if (nav.page === "contacto")    return <ContactoPage onBack={goBack} />;
-  if (nav.page === "viajeros")    return <ViajerosPage onBack={goBack} />;
-  if (nav.page === "campanadas")  return <CampanadasPage onBack={goBack} />;
-  if (nav.page === "horarios")        return <HorariosPage onBack={goBack} />;
-  if (nav.page === "top10")           return <Top10Page onBack={goBack} />;
-  if (nav.page === "postal")          return <PostalPage onBack={goBack} />;
-  if (nav.page === "sostenibilidad")  return <SostenibilidadPage onBack={goBack} />;
-  if (nav.page === "servicio")         return <ServicioHabitacionesPage onBack={goBack} onContacto={() => setNav({ page: "contacto" })} />;
-  if (nav.page === "transporte")       return <TransportePage onBack={goBack} />;
-  if (nav.page === "historia") {
-    return (
-      <HistoriaPage
-        onBack={goBack}
-        onViajeros={() => navigate({ page: "viajeros" })}
-        onCampanadas={() => navigate({ page: "campanadas" })}
-      />
-    );
-  }
-  if (nav.page === "service" && nav.serviceKey) {
-    const svc = ALL_SERVICES.find((s) => s.key === nav.serviceKey);
-    return <ServiceDetail serviceKey={nav.serviceKey} icon={svc?.icon} onBack={goBack} />;
-  }
+    setLocation(path);
+  }, [setLocation]);
 
   // ── Home ──────────────────────────────────────────────────────────────────
 
@@ -217,7 +180,7 @@ export default function Home() {
     <div
       className="flex flex-col"
       style={{
-        background: "oklch(0.08 0 0)",
+        background: "var(--background)",
         maxWidth: 480,
         margin: "0 auto",
         minHeight: "100dvh",
@@ -226,13 +189,18 @@ export default function Home() {
     >
       {/* ── Header ── */}
       <header className="relative flex flex-col items-center pt-6 pb-0 px-5">
-        <div className="absolute top-5 right-5">
+        {/* Idioma — derecha */}
+        <div className="absolute top-5 right-5" style={{ zIndex: 20 }}>
           <LanguageSelector />
+        </div>
+        {/* Tema — izquierda */}
+        <div className="absolute top-5 left-5" style={{ zIndex: 20 }}>
+          <ThemeToggleWide />
         </div>
 
         <div className="logo-animate w-full flex justify-center px-10 mb-2">
           <img
-            src={LOGO_BLANCO}
+            src={theme === "dark" ? LOGO_BLANCO : LOGO_AZUL}
             alt="La Fonda de los Príncipes"
             className="w-full"
             style={{ maxWidth: 141, opacity: 0.95 }}
@@ -257,7 +225,7 @@ export default function Home() {
             fontStyle: "italic",
             fontWeight: 300,
             fontSize: "clamp(0.78rem, 3vw, 0.9rem)",
-            color: "oklch(0.72 0.015 85)",
+            color: "var(--muted-foreground)",
             letterSpacing: "0.04em",
             animationDelay: "0.3s",
           }}
@@ -286,12 +254,12 @@ export default function Home() {
                   return (
                     <button
                       key={svc.key}
-                      onClick={() => navigate(getTarget(svc.key))}
+                      onClick={() => navigate(getPath(svc.key))}
                       className={`service-tile ${skipAnimation ? "" : "tile-animate"} flex flex-col items-center justify-center gap-2.5 rounded-sm`}
                       style={{
                         animationDelay: skipAnimation ? undefined : `${0.5 + i * 0.07}s`,
-                        background: "oklch(0.11 0 0)",
-                        border: "1px solid oklch(0.20 0.012 72)",
+                        background: "var(--card)",
+                        border: "1px solid var(--border)",
                         color: "var(--gold)",
                         padding: "0.75rem 0.5rem",
                         minHeight: 72,
@@ -306,7 +274,7 @@ export default function Home() {
                           fontFamily: "'DM Sans', sans-serif",
                           fontWeight: 500,
                           fontSize: "clamp(0.68rem, 2.8vw, 0.78rem)",
-                          color: "oklch(0.90 0.02 85)",
+                          color: "var(--foreground)",
                           letterSpacing: "0.06em",
                           textTransform: "uppercase",
                           lineHeight: 1.15,
@@ -327,14 +295,14 @@ export default function Home() {
       {/* ── Footer ── */}
       <footer
         className="px-5 pb-4 text-center"
-        style={{ borderTop: "1px solid oklch(0.14 0.01 72)", paddingTop: "0.6rem" }}
+        style={{ borderTop: "1px solid var(--border)", paddingTop: "0.6rem" }}
       >
         <p
           style={{
             fontFamily: "'DM Sans', sans-serif",
             fontWeight: 300,
             fontSize: "0.65rem",
-            color: "oklch(0.35 0.01 85)",
+            color: "var(--muted-foreground)",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
           }}

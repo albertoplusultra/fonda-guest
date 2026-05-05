@@ -4,17 +4,15 @@
  */
 import { Clock, Luggage } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import BackButton from "@/components/BackButton";
-import LanguageSelector from "@/components/LanguageSelector";
-
-const LOGO_BLANCO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/logo-blanco-hd_6b7412e4.png";
+import PageLayout from "@/components/PageLayout";
+import PageTitle from "@/components/PageTitle";
+import InfoCard from "@/components/InfoCard";
+import { ps } from "@/lib/pageStyles";
 
 interface HorariosPageProps {
   onBack: () => void;
 }
 
-// Horarios por idioma — estructura fija, traducida
-// Cada entrada puede tener value (fila simple) o rows (filas múltiples con sublabel)
 interface ScheduleRow {
   label: string;
   value?: string;
@@ -179,160 +177,43 @@ export default function HorariosPage({ onBack }: HorariosPageProps) {
   const title = TITLES[lang] ?? TITLES["es"];
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "oklch(0.08 0 0)", maxWidth: 480, margin: "0 auto" }}
-    >
-      {/* Header */}
-      <header
-        className="flex items-center justify-between px-5 pt-8 pb-4"
-        style={{ borderBottom: "1px solid oklch(0.16 0.01 72)" }}
-      >
-        <BackButton onClick={onBack} />
-        <img
-          src={LOGO_BLANCO}
-          alt="La Fonda de los Príncipes"
-          className="h-8"
-          style={{ opacity: 0.85 }}
-        />
-        <LanguageSelector />
-      </header>
+    <PageLayout onBack={onBack}>
+      <PageTitle>{title}</PageTitle>
 
-      {/* Content */}
-      <main className="flex-1 px-6 pt-10 pb-12">
-        {/* Title */}
-        <h1
-          className="mb-6"
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontWeight: 300,
-            fontSize: "clamp(1.8rem, 6vw, 2.4rem)",
-            color: "oklch(0.96 0.025 85)",
-            lineHeight: 1.15,
-            letterSpacing: "-0.01em",
-          }}
-        >
-          {title}
-        </h1>
-
-        {/* Gold divider */}
-        <div
-          className="mb-8"
-          style={{
-            height: 1,
-            background: "linear-gradient(90deg, var(--gold), transparent)",
-            width: "60%",
-          }}
-        />
-
-        {/* Schedule rows */}
-        <div className="flex flex-col gap-0">
-          {rows.map((row, i) => (
-            <div
-              key={i}
-              className="py-4"
-              style={{ borderBottom: "1px solid oklch(0.16 0.01 72)" }}
-            >
-              {/* Label row */}
-              <div className="flex items-center gap-3 mb-1">
-                <Clock
-                  size={14}
-                  strokeWidth={1.5}
-                  style={{ color: "var(--gold)", opacity: 0.7, flexShrink: 0 }}
-                />
-                <span
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontWeight: 300,
-                    fontSize: "0.9rem",
-                    color: "oklch(0.70 0.015 85)",
-                  }}
-                >
-                  {row.label}
+      <div className="flex flex-col gap-0">
+        {rows.map((row, i) => (
+          <div key={i} className="py-4" style={{ borderBottom: "1px solid var(--border)" }}>
+            <div style={{ ...ps.iconRow, marginBottom: "0.25rem", gap: "0.5rem" }}>
+              <Clock size={14} strokeWidth={1.5} style={{ color: "var(--gold)", opacity: 0.7, flexShrink: 0 }} />
+              <span style={{ ...ps.muted, marginBottom: 0 }}>{row.label}</span>
+              {row.value && (
+                <span className="ml-auto" style={{ ...ps.rowValue, fontFamily: "'Cormorant Garamond', serif", fontSize: "1rem" }}>
+                  {row.value}
                 </span>
-                {/* Simple value inline */}
-                {row.value && (
-                  <span
-                    className="ml-auto"
-                    style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontWeight: 400,
-                      fontSize: "1rem",
-                      color: "var(--gold)",
-                      letterSpacing: "0.02em",
-                    }}
-                  >
-                    {row.value}
-                  </span>
-                )}
-              </div>
-              {/* Sub-rows */}
-              {row.rows && (
-                <div className="flex flex-col gap-1 pl-7 mt-1">
-                  {row.rows.map((sub, j) => (
-                    <div key={j} className="flex items-center justify-between">
-                      <span
-                        style={{
-                          fontFamily: "'DM Sans', sans-serif",
-                          fontWeight: 300,
-                          fontSize: "0.78rem",
-                          color: "oklch(0.52 0.01 85)",
-                          letterSpacing: "0.01em",
-                        }}
-                      >
-                        {sub.sublabel}
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: "'Cormorant Garamond', serif",
-                          fontWeight: 400,
-                          fontSize: "0.95rem",
-                          color: "var(--gold)",
-                          letterSpacing: "0.02em",
-                        }}
-                      >
-                        {sub.value}
-                      </span>
-                    </div>
-                  ))}
-                </div>
               )}
             </div>
-          ))}
-        </div>
+            {row.rows && (
+              <div className="flex flex-col gap-1 pl-7 mt-1">
+                {row.rows.map((sub, j) => (
+                  <div key={j} className="flex items-center justify-between">
+                    <span style={{ ...ps.muted, fontSize: "0.88rem" }}>{sub.sublabel}</span>
+                    <span style={{ ...ps.rowValue, fontFamily: "'Cormorant Garamond', serif", fontSize: "0.95rem" }}>{sub.value}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
 
-        {/* Luggage note */}
-        <div
-          className="mt-8 px-4 py-4 rounded-sm"
-          style={{
-            background: "oklch(0.11 0 0)",
-            border: "1px solid oklch(0.22 0.015 72)",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "'DM Sans', sans-serif",
-              fontWeight: 300,
-              fontSize: "0.88rem",
-              color: "oklch(0.68 0.015 85)",
-              lineHeight: 1.65,
-              margin: 0,
-            }}
-          >
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                marginBottom: "0.5rem",
-              }}
-            >
-              <Luggage size={16} strokeWidth={1.25} style={{ color: "var(--gold)", opacity: 0.85, flexShrink: 0 }} />
-            </span>
-            {LUGGAGE_NOTE[lang] ?? LUGGAGE_NOTE["es"]}
-          </p>
+      <InfoCard style={{ marginTop: "2rem" }}>
+        <div className="flex items-center gap-2 mb-2">
+          <Luggage size={16} strokeWidth={1.25} style={{ color: "var(--gold)", opacity: 0.85, flexShrink: 0 }} />
         </div>
-      </main>
-    </div>
+        <p style={{ ...ps.muted, fontSize: "0.88rem", margin: 0 }}>
+          {LUGGAGE_NOTE[lang] ?? LUGGAGE_NOTE["es"]}
+        </p>
+      </InfoCard>
+    </PageLayout>
   );
 }

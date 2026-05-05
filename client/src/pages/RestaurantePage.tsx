@@ -1,27 +1,25 @@
 /*
- * RestaurantePage — "Noche en Sol" design
- * Carta de comida del restaurante La Fonda de los Príncipes
+ * RestaurantePage — Carta del restaurante con acordeón de 7 categorías
+ * Mismo patrón de diseño que BarPage
  */
-import BackButton from "@/components/BackButton";
+import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import LanguageSelector from "@/components/LanguageSelector";
+import PageLayout from "@/components/PageLayout";
+import PageTitle from "@/components/PageTitle";
+import InfoCard from "@/components/InfoCard";
+import { ps } from "@/lib/pageStyles";
 
-const LOGO_BLANCO =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/logo-blanco-hd_6b7412e4.png";
+type CatKey = "starters" | "salads" | "eggs" | "boards" | "mains" | "sandwiches" | "desserts";
 
 interface Dish {
   name: string;
   desc?: string;
   price?: string;
 }
-interface MenuSection {
-  title: string;
-  dishes: Dish[];
-}
 
-const FOOD_MENU: MenuSection[] = [
+const MENU: { key: CatKey; dishes: Dish[] }[] = [
   {
-    title: "Entrantes",
+    key: "starters",
     dishes: [
       { name: "Gildas", desc: "Banderilla de aceitunas verdes, guindillas en vinagre y, a elegir, boquerón, pulpo o anchoa", price: "3,50 €" },
       { name: "Anchoas de Santoña", desc: "Las más anchas y de mayor calidad del mercado", price: "27 €" },
@@ -32,7 +30,7 @@ const FOOD_MENU: MenuSection[] = [
     ],
   },
   {
-    title: "Ensaladas",
+    key: "salads",
     dishes: [
       { name: "Ensaladilla rusa con ventresca", desc: "Cremosa con base de patata, zanahoria, ventresca, huevo cocido, mahonesa", price: "14 €" },
       { name: "Ensalada de burrata", desc: "Burrata, tomates cherry confitados, pesto de albahaca y piñones sobre una cama de rúcula", price: "21 €" },
@@ -40,7 +38,7 @@ const FOOD_MENU: MenuSection[] = [
     ],
   },
   {
-    title: "Huevos",
+    key: "eggs",
     dishes: [
       { name: "Tortilla de Betanzos", desc: "Un huevo completo, tres yemas de huevo, patatas pochadas, cebolla, aceite y sal", price: "13 €" },
       { name: "Huevos estrellados", desc: "Huevos fritos, patatas fritas y jamón ibérico", price: "17 €" },
@@ -48,7 +46,7 @@ const FOOD_MENU: MenuSection[] = [
     ],
   },
   {
-    title: "Tablas",
+    key: "boards",
     dishes: [
       { name: "Tabla de jamón ibérico", desc: "Jamón ibérico de Extremadura servido con pan de cristal y tomate rallado", price: "29 €" },
       { name: "Tabla de ibéricos", desc: "Jamón, lomo, chorizo y salchichón, todos ibéricos, servidos con picos artesanos", price: "24 €" },
@@ -56,14 +54,14 @@ const FOOD_MENU: MenuSection[] = [
     ],
   },
   {
-    title: "Carne y Pescado",
+    key: "mains",
     dishes: [
       { name: "Solomillo demi-glace y trufa", desc: "Solomillo al punto con salsa demi-glace y toque de trufa, acompañado de cremoso de patata", price: "29 €" },
       { name: "Salmón de Lonja con Menestra", desc: "Salmón fresco de lonja a la plancha, servido con menestra de verduras de temporada", price: "22 €" },
     ],
   },
   {
-    title: "Sándwiches y hamburguesas",
+    key: "sandwiches",
     dishes: [
       { name: "Mollete de carrillera", desc: "Pan de mollete con carrillera de ternera estofada, foie de pato y reducción de Pedro Ximénez", price: "19 €" },
       { name: "Bocata de calamar", desc: "Pan de mollete con calamares fritos y mayonesa de tinta de calamar", price: "15 €" },
@@ -71,7 +69,7 @@ const FOOD_MENU: MenuSection[] = [
     ],
   },
   {
-    title: "Postres",
+    key: "desserts",
     dishes: [
       { name: "Brownie con helado de vainilla", desc: "Brownie templado de chocolate acompañado de helado de vainilla", price: "8 €" },
       { name: "Tarta de queso con frutos rojos", desc: "Cremosa tarta de queso servida con frutos rojos y su coulis", price: "8 €" },
@@ -81,17 +79,17 @@ const FOOD_MENU: MenuSection[] = [
   },
 ];
 
-const SECTION_TITLES: Record<string, string[]> = {
-  es: ["Entrantes","Ensaladas","Huevos","Tablas","Carne y Pescado","Sándwiches y hamburguesas","Postres"],
-  en: ["Starters","Salads","Eggs","Charcuterie boards","Meat & Fish","Sandwiches & burgers","Desserts"],
-  fr: ["Entrées","Salades","Œufs","Planches","Viande et Poisson","Sandwichs et burgers","Desserts"],
-  de: ["Vorspeisen","Salate","Eier","Bretter","Fleisch und Fisch","Sandwiches und Burger","Desserts"],
-  it: ["Antipasti","Insalate","Uova","Taglieri","Carne e Pesce","Panini e hamburger","Dolci"],
-  pt: ["Entradas","Saladas","Ovos","Tábuas","Carne e Peixe","Sandes e hambúrgueres","Sobremesas"],
-  zh: ["前菜","沙拉","鸡蛋","拼盘","肉类和鱼类","三明治和汉堡","甜点"],
-  ja: ["前菜","サラダ","卵料理","盛り合わせ","肉・魚料理","サンドイッチ・バーガー","デザート"],
-  ar: ["المقبلات","السلطات","البيض","ألواح اللحوم","اللحوم والأسماك","السندويشات والبرغر","الحلويات"],
-  ru: ["Закуски","Салаты","Яйца","Доски","Мясо и рыба","Сэндвичи и бургеры","Десерты"],
+const CAT_LABELS: Record<string, Record<CatKey, string>> = {
+  es: { starters: "Entrantes", salads: "Ensaladas", eggs: "Huevos", boards: "Quesos e ibéricos", mains: "Carne y Pescado", sandwiches: "Sándwiches y hamburguesas", desserts: "Postres" },
+  en: { starters: "Starters", salads: "Salads", eggs: "Eggs", boards: "Cheese & charcuterie", mains: "Meat & Fish", sandwiches: "Sandwiches & burgers", desserts: "Desserts" },
+  fr: { starters: "Entrées", salads: "Salades", eggs: "Œufs", boards: "Fromages & charcuterie", mains: "Viande et Poisson", sandwiches: "Sandwichs et burgers", desserts: "Desserts" },
+  de: { starters: "Vorspeisen", salads: "Salate", eggs: "Eier", boards: "Käse & Wurstwaren", mains: "Fleisch und Fisch", sandwiches: "Sandwiches und Burger", desserts: "Desserts" },
+  it: { starters: "Antipasti", salads: "Insalate", eggs: "Uova", boards: "Formaggi & salumi", mains: "Carne e Pesce", sandwiches: "Panini e hamburger", desserts: "Dolci" },
+  pt: { starters: "Entradas", salads: "Saladas", eggs: "Ovos", boards: "Queijos e enchidos", mains: "Carne e Peixe", sandwiches: "Sandes e hambúrgueres", desserts: "Sobremesas" },
+  zh: { starters: "前菜", salads: "沙拉", eggs: "鸡蛋", boards: "奶酪与熟食", mains: "肉类和鱼类", sandwiches: "三明治和汉堡", desserts: "甜点" },
+  ja: { starters: "前菜", salads: "サラダ", eggs: "卵料理", boards: "チーズ＆シャルキュトリー", mains: "肉・魚料理", sandwiches: "サンドイッチ・バーガー", desserts: "デザート" },
+  ar: { starters: "المقبلات", salads: "السلطات", eggs: "البيض", boards: "الجبن والشاركوتيري", mains: "اللحوم والأسماك", sandwiches: "السندويشات والبرغر", desserts: "الحلويات" },
+  ru: { starters: "Закуски", salads: "Салаты", eggs: "Яйца", boards: "Сыры и мясные деликатесы", mains: "Мясо и рыба", sandwiches: "Сэндвичи и бургеры", desserts: "Десерты" },
 };
 
 interface ScheduleRow { days: string; time: string; }
@@ -138,138 +136,141 @@ const PAGE_COPY: Record<string, { title: string; scheduleLabel: string; schedule
   ]},
 };
 
-interface RestaurantePageProps {
-  onBack: () => void;
-}
+interface Props { onBack: () => void; }
 
-export default function RestaurantePage({ onBack }: RestaurantePageProps) {
+export default function RestaurantePage({ onBack }: Props) {
   const { lang } = useLanguage();
-  const isRtl = lang === "ar";
-  const copy = PAGE_COPY[lang] ?? PAGE_COPY["en"];
-  const sectionTitles = SECTION_TITLES[lang] ?? SECTION_TITLES["en"];
+  const catLabels = CAT_LABELS[lang] ?? CAT_LABELS.es;
+  const copy = PAGE_COPY[lang] ?? PAGE_COPY.es;
+
+  const [openCat, setOpenCat] = useState<CatKey | null>(null);
+  const toggle = (key: CatKey) => setOpenCat(prev => prev === key ? null : key);
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "oklch(0.08 0 0)", maxWidth: 480, margin: "0 auto" }}
-      dir={isRtl ? "rtl" : "ltr"}
-    >
-      {/* Header */}
-      <header
-        className="flex items-center justify-between px-5 pt-8 pb-4"
-        style={{ borderBottom: "1px solid oklch(0.16 0.01 72)" }}
-      >
-        <BackButton onClick={onBack} />
-        <img src={LOGO_BLANCO} alt="La Fonda de los Príncipes" className="h-8" style={{ opacity: 0.85 }} />
-        <LanguageSelector />
-      </header>
+    <PageLayout onBack={onBack}>
+      <PageTitle>{copy.title}</PageTitle>
 
-      {/* Content */}
-      <main className="flex-1 px-6 pt-10 pb-16">
+      {/* Schedule */}
+      <InfoCard className="mt-4 mb-6">
+        <span style={{ ...ps.muted, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+          {copy.scheduleLabel}
+        </span>
+        <div className="flex flex-col mt-2">
+          {copy.scheduleRows.map((row, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between"
+              style={{ paddingTop: "0.55rem", paddingBottom: "0.55rem", borderTop: i > 0 ? "1px solid var(--border)" : undefined }}
+            >
+              <span style={{ ...ps.muted, fontWeight: 300, fontSize: "0.82rem" }}>{row.days}</span>
+              <span style={ps.menuPrice}>
+                {row.time}
+              </span>
+            </div>
+          ))}
+        </div>
+      </InfoCard>
 
-        <h1 className="mb-2" style={{
-          fontFamily: "'Cormorant Garamond', serif",
-          fontWeight: 300,
-          fontSize: "clamp(1.8rem, 6vw, 2.4rem)",
-          color: "oklch(0.96 0.025 85)",
-          lineHeight: 1.15,
-          letterSpacing: "-0.01em",
-        }}>
-          {copy.title}
-        </h1>
-
-        {/* Schedule block */}
-        <div
-          className="mb-6 px-4 py-4 rounded-sm"
-          style={{ background: "oklch(0.11 0 0)", border: "1px solid oklch(0.20 0.012 72)" }}
-        >
-          <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.58rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "oklch(0.45 0.01 85)" }}>
-            {copy.scheduleLabel}
-          </span>
-          <div className="flex flex-col mt-2">
-            {copy.scheduleRows.map((row, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-between"
+      {/* Accordion */}
+      <div className="flex flex-col gap-2 mb-8">
+        {MENU.map((cat) => {
+          const isOpen = openCat === cat.key;
+          return (
+            <div
+              key={cat.key}
+              style={{
+                borderRadius: isOpen ? "0 6px 6px 0" : 6,
+                border: "1px solid var(--border)",
+                borderLeft: isOpen ? "3px solid var(--gold)" : "1px solid var(--border)",
+                transition: "border-color 0.2s, border-left-width 0.2s",
+                overflow: "hidden",
+              }}
+            >
+              {/* Category header button */}
+              <button
+                onClick={() => toggle(cat.key)}
+                className="w-full flex items-center justify-between px-5 py-4"
                 style={{
-                  paddingTop: "0.55rem",
-                  paddingBottom: "0.55rem",
-                  borderTop: i > 0 ? "1px solid oklch(0.16 0.01 72)" : undefined,
+                  background: isOpen ? "var(--card)" : "transparent",
+                  cursor: "pointer",
+                  transition: "background 0.2s",
+                  textAlign: "left",
                 }}
               >
-                <span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: "0.82rem", color: "oklch(0.62 0.012 85)" }}>
-                  {row.days}
+                <span style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontWeight: isOpen ? 600 : 400,
+                  fontSize: "1.15rem",
+                  color: isOpen ? "var(--gold)" : "var(--foreground)",
+                  letterSpacing: "0.03em",
+                  transition: "color 0.2s, font-weight 0.2s",
+                }}>
+                  {catLabels[cat.key]}
                 </span>
-                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: "1.05rem", color: "var(--gold)", letterSpacing: "0.02em" }}>
-                  {row.time}
+                <span style={{
+                  fontSize: "1.1rem",
+                  color: "var(--gold)",
+                  transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.25s ease",
+                  display: "inline-block",
+                  lineHeight: 1,
+                }}>
+                  ›
                 </span>
-              </div>
-            ))}
-          </div>
-        </div>
+              </button>
 
-        <div className="mb-8" style={{ height: 1, background: "linear-gradient(90deg, var(--gold), transparent)", width: "60%" }} />
-
-        {FOOD_MENU.map((section, sIdx) => (
-          <div key={sIdx} className="mb-10">
-            <h2 className="mb-5" style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontWeight: 500,
-              fontSize: "1.2rem",
-              color: "var(--gold)",
-              letterSpacing: "0.02em",
-              borderBottom: "1px solid oklch(0.18 0.01 72)",
-              paddingBottom: "0.5rem",
-            }}>
-              {sectionTitles[sIdx] ?? section.title}
-            </h2>
-            <div className="flex flex-col gap-4">
-              {section.dishes.map((dish, dIdx) => (
-                <div key={dIdx} className="flex justify-between items-start gap-3">
-                  <div className="flex-1">
-                    <p style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontWeight: 500,
-                      fontSize: "0.88rem",
-                      color: "oklch(0.88 0.02 85)",
-                      lineHeight: 1.4,
-                      marginBottom: dish.desc ? "0.2rem" : 0,
-                    }}>
-                      {dish.name}
-                    </p>
-                    {dish.desc && (
-                      <p style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontWeight: 300,
-                        fontSize: "0.75rem",
-                        color: "oklch(0.50 0.012 85)",
-                        lineHeight: 1.55,
-                        fontStyle: "italic",
-                      }}>
-                        {dish.desc}
-                      </p>
-                    )}
+              {/* Category content */}
+              {isOpen && (
+                <div
+                  style={{
+                    padding: "0.75rem 1.25rem 1.5rem",
+                    background: "var(--card)",
+                    animation: "fadeSlideIn 0.2s ease",
+                  }}
+                >
+                  <div className="flex flex-col gap-4">
+                    {cat.dishes.map((dish, dIdx) => (
+                      <div key={dIdx} className="flex justify-between items-start gap-3"
+                        style={{ borderTop: dIdx > 0 ? "1px solid var(--border)" : undefined, paddingTop: dIdx > 0 ? "0.75rem" : undefined }}
+                      >
+                        <div className="flex-1">
+                          <p style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            fontWeight: 500,
+                            fontSize: "0.9rem",
+                            color: "var(--card-foreground)",
+                            marginBottom: dish.desc ? "0.2rem" : 0,
+                          }}>
+                            {dish.name}
+                          </p>
+                          {dish.desc && (
+                            <p style={{ ...ps.muted, fontWeight: 300, fontStyle: "italic", fontSize: "0.8rem" }}>
+                              {dish.desc}
+                            </p>
+                          )}
+                        </div>
+                        {dish.price && (
+                          <span style={{
+                            fontFamily: "'DM Sans', sans-serif",
+                            fontWeight: 500,
+                            fontSize: "0.82rem",
+                            color: "var(--gold)",
+                            whiteSpace: "nowrap",
+                            flexShrink: 0,
+                            paddingTop: "0.05rem",
+                          }}>
+                            {dish.price}
+                          </span>
+                        )}
+                      </div>
+                    ))}
                   </div>
-                  {dish.price && (
-                    <span style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontWeight: 500,
-                      fontSize: "0.82rem",
-                      color: "var(--gold)",
-                      whiteSpace: "nowrap",
-                      flexShrink: 0,
-                      paddingTop: "0.05rem",
-                    }}>
-                      {dish.price}
-                    </span>
-                  )}
                 </div>
-              ))}
+              )}
             </div>
-          </div>
-        ))}
-
-      </main>
-    </div>
+          );
+        })}
+      </div>
+    </PageLayout>
   );
 }

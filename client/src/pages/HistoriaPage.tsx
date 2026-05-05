@@ -4,11 +4,10 @@
  * Incluye dos enlaces al final: Viajeros Memorables y Las Campanadas
  */
 import { Users, Bell } from "lucide-react";
-import BackButton from "@/components/BackButton";
 import { useLanguage } from "@/contexts/LanguageContext";
-import LanguageSelector from "@/components/LanguageSelector";
-
-const LOGO_BLANCO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/logo-blanco-hd_6b7412e4.png";
+import PageLayout from "@/components/PageLayout";
+import PageTitle from "@/components/PageTitle";
+import { ps } from "@/lib/pageStyles";
 
 interface HistoriaPageProps {
   onBack: () => void;
@@ -226,28 +225,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
   };
 
   return (
-    <div
-      className="flex flex-col"
-      style={{ background: "oklch(0.08 0 0)", maxWidth: 480, margin: "0 auto", minHeight: "100dvh" }}
-    >
-      {/* Header */}
-      <header
-        className="flex items-center justify-between px-5 pt-8 pb-4"
-        style={{ borderBottom: "1px solid oklch(0.16 0.01 72)" }}
-      >
-        <BackButton onClick={onBack} />
-
-        <img
-          src={LOGO_BLANCO}
-          alt="La Fonda de los Príncipes"
-          style={{ height: 32, opacity: 0.85 }}
-        />
-
-        <LanguageSelector />
-      </header>
-
-      {/* Content */}
-      <main className="flex-1 px-6 pt-10 pb-12">
+    <PageLayout onBack={onBack}>
         {/* Title */}
         <h1
           className="mb-4"
@@ -255,7 +233,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
             fontSize: "clamp(1.8rem, 6vw, 2.4rem)",
-            color: "oklch(0.96 0.025 85)",
+            color: "var(--foreground)",
             lineHeight: 1.15,
             letterSpacing: "-0.01em",
           }}
@@ -281,7 +259,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
             fontStyle: "italic",
             fontWeight: 400,
             fontSize: "clamp(1.05rem, 3.5vw, 1.2rem)",
-            color: "oklch(0.82 0.025 85)",
+            color: "var(--card-foreground)",
             lineHeight: 1.7,
           }}
         >
@@ -297,7 +275,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
                 fontFamily: "'DM Sans', sans-serif",
                 fontWeight: 300,
                 fontSize: "0.93rem",
-                color: "oklch(0.68 0.015 85)",
+                color: "var(--muted-foreground)",
                 lineHeight: 1.85,
               }}
             >
@@ -311,7 +289,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
           className="mt-10 mb-10 px-5 py-5"
           style={{
             borderLeft: "2px solid var(--gold)",
-            background: "oklch(0.11 0.005 72)",
+            background: "var(--card)",
           }}
         >
           <p
@@ -320,7 +298,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
               fontStyle: "italic",
               fontWeight: 400,
               fontSize: "clamp(0.95rem, 3.2vw, 1.05rem)",
-              color: "oklch(0.78 0.025 85)",
+              color: "var(--secondary-foreground)",
               lineHeight: 1.75,
               marginBottom: "0.75rem",
             }}
@@ -330,7 +308,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
           <cite
             style={{
               ...labelStyle,
-              color: "oklch(0.50 0.015 85)",
+              color: "var(--muted-foreground)",
               fontStyle: "normal",
             }}
           >
@@ -343,13 +321,13 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
           className="mt-2 mb-4"
           style={{
             height: 1,
-            background: "linear-gradient(90deg, transparent, oklch(0.22 0.012 72), transparent)",
+            background: "linear-gradient(90deg, transparent, var(--border), transparent)",
           }}
         />
 
         <p
           className="mb-5 text-center"
-          style={{ ...labelStyle, color: "oklch(0.45 0.01 85)" }}
+          style={{ ...labelStyle, color: "var(--muted-foreground)" }}
         >
           {c.readMore}
         </p>
@@ -360,17 +338,17 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
             onClick={onViajeros}
             className="flex items-center gap-4 w-full px-5 py-4 text-left transition-all duration-200"
             style={{
-              background: "oklch(0.11 0 0)",
-              border: "1px solid oklch(0.20 0.012 72)",
+              background: "var(--card)",
+              border: "1px solid var(--border)",
               borderRadius: "2px",
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--gold)";
-              (e.currentTarget as HTMLButtonElement).style.background = "oklch(0.13 0.03 72 / 0.5)";
+              (e.currentTarget as HTMLButtonElement).style.background = "var(--tile-hover-bg)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "oklch(0.20 0.012 72)";
-              (e.currentTarget as HTMLButtonElement).style.background = "oklch(0.11 0 0)";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
+              (e.currentTarget as HTMLButtonElement).style.background = "var(--card)";
             }}
           >
             <span
@@ -378,7 +356,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
               style={{
                 width: 38,
                 height: 38,
-                border: "1px solid oklch(0.22 0.015 72)",
+                border: "1px solid var(--border)",
                 borderRadius: "2px",
                 ...goldStyle,
               }}
@@ -390,7 +368,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
                 fontFamily: "'Cormorant Garamond', serif",
                 fontWeight: 400,
                 fontSize: "clamp(1rem, 3.5vw, 1.1rem)",
-                color: "oklch(0.88 0.025 85)",
+                color: "var(--card-foreground)",
                 lineHeight: 1.2,
               }}
             >
@@ -404,17 +382,17 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
             onClick={onCampanadas}
             className="flex items-center gap-4 w-full px-5 py-4 text-left transition-all duration-200"
             style={{
-              background: "oklch(0.11 0 0)",
-              border: "1px solid oklch(0.20 0.012 72)",
+              background: "var(--card)",
+              border: "1px solid var(--border)",
               borderRadius: "2px",
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--gold)";
-              (e.currentTarget as HTMLButtonElement).style.background = "oklch(0.13 0.03 72 / 0.5)";
+              (e.currentTarget as HTMLButtonElement).style.background = "var(--tile-hover-bg)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLButtonElement).style.borderColor = "oklch(0.20 0.012 72)";
-              (e.currentTarget as HTMLButtonElement).style.background = "oklch(0.11 0 0)";
+              (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
+              (e.currentTarget as HTMLButtonElement).style.background = "var(--card)";
             }}
           >
             <span
@@ -422,7 +400,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
               style={{
                 width: 38,
                 height: 38,
-                border: "1px solid oklch(0.22 0.015 72)",
+                border: "1px solid var(--border)",
                 borderRadius: "2px",
                 ...goldStyle,
               }}
@@ -434,7 +412,7 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
                 fontFamily: "'Cormorant Garamond', serif",
                 fontWeight: 400,
                 fontSize: "clamp(1rem, 3.5vw, 1.1rem)",
-                color: "oklch(0.88 0.025 85)",
+                color: "var(--card-foreground)",
                 lineHeight: 1.2,
               }}
             >
@@ -443,7 +421,6 @@ export default function HistoriaPage({ onBack, onViajeros, onCampanadas }: Histo
             <span className="ml-auto" style={{ ...goldStyle, opacity: 0.6 }}>›</span>
           </button>
         </div>
-      </main>
-    </div>
+    </PageLayout>
   );
 }

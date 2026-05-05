@@ -3,12 +3,11 @@
  * Top 10 de Madrid según disfrutamadrid.com
  * Fuente: https://www.disfrutamadrid.com/top-10
  */
-import { MapPin, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import BackButton from "@/components/BackButton";
-import LanguageSelector from "@/components/LanguageSelector";
-
-const LOGO_BLANCO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/logo-blanco-hd_6b7412e4.png";
+import PageLayout from "@/components/PageLayout";
+import PageTitle from "@/components/PageTitle";
+import { ps } from "@/lib/pageStyles";
 
 interface Top10PageProps {
   onBack: () => void;
@@ -138,230 +137,94 @@ const TOP10_DATA: Record<string, { title: string; subtitle: string; items: Top10
     items: [
       { name: "格兰大道",              desc: "马德里最著名的街道，建于1910至1929年间，是城市的商业和剧院中心。" },
       { name: "太阳门广场",            desc: "熊与草莓树雕像、零公里标志和著名的新年倒计时钟楼。马德里最具标志性的广场，也是距离您最近的地方。" },
-      { name: "马约尔广场",            desc: "1619年落成，距太阳门广场仅数步之遥。首都的象征，拥有拱廊、露台和市场。" },
-      { name: "阿尔卡拉门",            desc: "马德里最著名的纪念碑之一，矗立于独立广场，紧邻丽池公园。" },
-      { name: "丽池公园",              desc: "马德里的绿肺，充满喷泉、音乐家和表演，一年四季都值得一游。" },
+      { name: "马约尔广场",            desc: "1619年落成，距太阳门广场仅数步之遥。首都的象征，拥有拱廈、露台和市场。" },
+      { name: "阿尔卡拉门",            desc: "马德里最著名的纪念碑之一，矗立于独立广场，紧邀丽池公园。" },
+      { name: "丽池公园",              desc: "马德里的绻色肺脖，充满喉泉、音乐家和表演，一年四季都値得一游。" },
       { name: "普拉多博物馆",          desc: "马德里最重要的博物馆，收藏戈雅、委拉斯开兹和博斯的作品。" },
       { name: "西贝莱斯广场",          desc: "马德里最著名的广场，西贝莱斯喷泉是皇家马德里庆祝胜利的地方。" },
       { name: "德博德神庙",            desc: "马德里市中心的埃及神庙，埃及赠予西班牙的礼物，提供城市最美的日落景观之一。" },
-      { name: "王宫",                  desc: "西班牙王室官邸，建于18世纪，是西欧最大的王宫。" },
-      { name: "伯纳乌球场",            desc: "皇家马德里球场，城市最受欢迎的景点之一，全年开放导览参观。" },
+      { name: "皇宫",                  desc: "西班牙王室的官邸，建于18世纪，是西欧最大的皇宫。" },
+      { name: "圣地亚哥·伯纳乌球场",  desc: "皇家马德里足球信乐部的主场，是马德里参观人数最多的景点之一，全年提供导览服务。" },
     ],
   },
   ja: {
-    title: "マドリードTop 10",
-    subtitle: "首都の必見スポット10選",
+    title: "マドリード Top 10",
+    subtitle: "首都の10大必見スポット",
     guide_label: "マドリード完全ガイド",
     guide_url: "https://www.introducingmadrid.com/",
     items: [
-      { name: "グラン・ビア",          desc: "マドリード最有名な通り。1910〜1929年に建設された商業・劇場の中心地。" },
-      { name: "プエルタ・デル・ソル",  desc: "クマとイチゴノキの像、ゼロキロメートル標識、そして年越しカウントダウンの時計塔。マドリード最象徴的な広場。" },
-      { name: "マヨール広場",          desc: "1619年に完成。プエルタ・デル・ソルから数歩の場所にある首都の象徴。" },
-      { name: "アルカラ門",            desc: "マドリード最有名な記念碑の一つ。レティーロ公園に隣接する独立広場に立つ。" },
-      { name: "レティーロ公園",        desc: "マドリードの緑の肺。噴水、音楽家、パフォーマンスが溢れ、一年中楽しめる。" },
-      { name: "プラド美術館",          desc: "マドリード最重要な美術館。ゴヤ、ベラスケス、ボスの作品を所蔵。" },
-      { name: "シベレス広場",          desc: "マドリード最有名な広場。シベレスの泉はレアル・マドリードが優勝を祝う場所。" },
-      { name: "デボド神殿",            desc: "マドリード中心部のエジプト神殿。エジプトからスペインへの贈り物で、最高の夕日スポット。" },
-      { name: "王宮",                  desc: "スペイン王室の公式邸宅。18世紀建造の西ヨーロッパ最大の王宮。" },
-      { name: "サンティアゴ・ベルナベウ", desc: "レアル・マドリードのスタジアム。市内で最も訪問者が多い場所の一つ。" },
+      { name: "グラン・ビア",              desc: "マドリード最も有名な通り。1910年から1929年に建設され、商業と演劇の中心地。" },
+      { name: "プエルタ・デル・ソル",    desc: "クマとイチゴの木の彫刻、キロメートルゼロ、年越しの鐘。マドリード最も象徴的な広場——そしてあなたの最も近くにある場所。" },
+      { name: "プラザ・マヨール",        desc: "1619年に開場した、プエルタ・デル・ソルから歩いてすぐの場所。アーケード、テラス、市場を持つ首都の象徴。" },
+      { name: "アルカラ門",            desc: "マドリード最も有名な紀念碑の一つ。レティーロ公園の隔に立つ独立広場を見下ろす。" },
+      { name: "レティーロ公園",          desc: "マドリードの緑の肺。年間を通じて訪れる価値のある、子山や音楽家、ショーに満ちた公園。" },
+      { name: "プラド美術館",          desc: "マドリード最重要な美術館。ゴヤ、ベラスケス、ボッシュの作品を所蔵。" },
+      { name: "シベレス広場",          desc: "マドリード最も有名な広場。シベレスの山の小屋はレアル・マドリードが勝利を祝う場所。" },
+      { name: "デボド神殿",            desc: "マドリードの心臓にあるエジプト神殿。エジプトからスペインへの贈り物で、素晴らしい夕日を望める場所。" },
+      { name: "王宮",                  desc: "スペイン王室の公式居宅。18世紀に建てられた西欧最大の王宮。" },
+      { name: "サンティアゴ・ベルナベウスタジアム", desc: "レアル・マドリードのスタジアム。年間を通じてガイドツアーがあるサッカーの聖地。" },
     ],
   },
   ar: {
-    title: "أفضل 10 في مدريد",
-    subtitle: "أهم 10 أماكن لا غنى عنها في العاصمة",
-    guide_label: "الدليل الكامل لمدريد",
+    title: "أفضل 10 معالم في مدريد",
+    subtitle: "المعالم العشرة التي لا غنى عنها في العاصمة",
+    guide_label: "دليل مدريد الشامل",
     guide_url: "https://www.introducingmadrid.com/",
     items: [
-      { name: "غران فيا",              desc: "أشهر شارع في مدريد، بُني بين عامَي 1910 و1929، وهو قلب التجارة والمسرح في المدينة." },
-      { name: "بويرتا ديل سول",        desc: "تمثال الدب وشجرة الفراولة، الكيلومتر صفر، وساعة رأس السنة الشهيرة. أكثر ميادين مدريد رمزية." },
-      { name: "بلاثا مايور",           desc: "افتُتحت عام 1619، على بُعد خطوات من بويرتا ديل سول. رمز العاصمة بأروقتها وتراساتها." },
-      { name: "بوابة الكالا",          desc: "أحد أشهر المعالم في مدريد، يُشرف على ساحة الاستقلال بجانب حديقة ريتيرو." },
-      { name: "حديقة ريتيرو",          desc: "رئة مدريد الخضراء. مليئة بالنوافير والموسيقيين والعروض. لا غنى عنها في أي وقت من السنة." },
-      { name: "متحف البرادو",          desc: "أهم متحف في مدريد. يضم أعمال غويا وفيلاسكيث وبوش." },
-      { name: "ساحة سيبيليس",          desc: "أشهر ساحة في مدريد. نافورة سيبيليس هي المكان الذي يحتفل فيه ريال مدريد بانتصاراته." },
-      { name: "معبد ديبود",            desc: "معبد مصري في قلب مدريد. هدية مصر لإسبانيا، يوفر أحد أجمل مناظر الغروب في المدينة." },
-      { name: "القصر الملكي",          desc: "المقر الرسمي للأسرة المالكة الإسبانية، بُني في القرن الثامن عشر. أكبر قصر ملكي في أوروبا الغربية." },
-      { name: "ملعب سانتياغو برنابيو", desc: "ملعب ريال مدريد، أحد أكثر المواقع زيارةً في المدينة. معبد كرة القدم مفتوح للجولات طوال العام." },
+      { name: "غران فيا",              desc: "أشهر شوارع مدريد، بُنيت بين 1910 و 1929، وهي قلب التجارة والمسرح في المدينة." },
+      { name: "بويرتا ديل سول",      desc: "تمثال الدب وشجرة التوت، الكيلومتر صفر، وساعة رأس السنة الشهيرة. أكثر ميادين مدريد رمزية — والأقرب إليك." },
+      { name: "بلازا مايور",          desc: "افتُتحت عام 1619، على بعد خطوات من بويرتا ديل سول. رمز العاصمة بأروقتها ومطاعمها وأسواقها." },
+      { name: "باب ألكالا",          desc: "أحد أشهر معالم مدريد، يطل على ميدان الاستقلال بجانب حديقة ريتيرو." },
+      { name: "حديقة ريتيرو",          desc: "رئة مدريد الخضراء، مليئة بالنافورات والموسيقيين والعروض. لا غنى عنها في أي وقت من السنة." },
+      { name: "متحف البرادو",          desc: "أهم متحف في مدريد، يضم أعمال غويا وفيلاسكيث وبوسخ." },
+      { name: "ميدان سيبيليس",        desc: "أشهر ميادين مدريد، نافورة سيبيليس هي المكان الذي يحتفل فيه ريال مدريد بانتصاراته." },
+      { name: "معبد ديبود",            desc: "معبد مصري في قلب مدريد، هدية مصر لإسبانيا، يوفر منظراً رائعاً للغروب." },
+      { name: "القصر الملكي",          desc: "المقر الرسمي للعائلة الملكية الإسبانية، بُني في القرن 18، أكبر قصر ملكي في أوروبا الغربية." },
+      { name: "ملعب سانتياغو بيرنابيو",  desc: "ملعب ريال مدريد، من أكثر المواقع زيارةً في المدينة، مع جولات إرشادية طوال العام." },
     ],
   },
   ru: {
-    title: "Топ 10 Мадрида",
-    subtitle: "10 обязательных мест столицы",
+    title: "Top 10 Мадрид",
+    subtitle: "10 главных достопримечательностей столицы",
     guide_label: "Полный путеводитель по Мадриду",
     guide_url: "https://www.introducingmadrid.com/",
     items: [
-      { name: "Гран-Виа",              desc: "Самая известная улица Мадрида, построенная в 1910–1929 годах. Коммерческое и театральное сердце города." },
-      { name: "Пуэрта-дель-Соль",      desc: "Медведь и земляничное дерево, нулевой километр и знаменитые новогодние куранты. Самая знаковая площадь Мадрида." },
-      { name: "Пласа-Майор",           desc: "Открытая в 1619 году, в нескольких шагах от Пуэрта-дель-Соль. Символ столицы с аркадами и террасами." },
-      { name: "Ворота Алькала",        desc: "Один из самых известных памятников Мадрида. Возвышается над площадью Независимости рядом с парком Ретиро." },
-      { name: "Парк Ретиро",           desc: "Зелёные лёгкие Мадрида. Фонтаны, музыканты и представления — незаменимое место в любое время года." },
-      { name: "Музей Прадо",           desc: "Главный музей Мадрида. Хранит работы Гойи, Веласкеса и Босха." },
-      { name: "Площадь Сибелес",       desc: "Самая знаменитая площадь Мадрида. У фонтана Сибелес Реал Мадрид отмечает свои победы." },
-      { name: "Храм Дебода",           desc: "Египетский храм в сердце Мадрида. Подарок Египта Испании — одно из лучших мест для наблюдения заката." },
-      { name: "Королевский дворец",    desc: "Официальная резиденция испанской королевской семьи, построенная в XVIII веке. Крупнейший королевский дворец Западной Европы." },
-      { name: "Стадион Сантьяго Бернабеу", desc: "Стадион Реал Мадрида — одно из самых посещаемых мест города. Экскурсии доступны круглый год." },
+      { name: "Гран-Виа",              desc: "Самая известная улица Мадрида, построенная в 1910–1929 гг. Торговый и театральный центр города." },
+      { name: "Пуэрта-дель-Соль",    desc: "Медведь и земляничное дерево, Нулевой километр и знаменитые новогодние куранты. Самая знаковая площадь Мадрида — и ближайшая к вам." },
+      { name: "Пласа-Майор",        desc: "Открыта в 1619 году, в нескольких шагах от Пуэрта-дель-Соль. Символ столицы с аркадами, террасами и рынками." },
+      { name: "Ворота Алькала",          desc: "Один из самых знаменитых памятников Мадрида, рядом с парком Ретиро." },
+      { name: "Парк Ретиро",          desc: "Зелёные лёгкие Мадрида. Фонтаны, музыканты, шоу. Обязательно посетить в любое время года." },
+      { name: "Музей Прадо",          desc: "Главный музей Мадрида. Здесь хранятся полотна Гойи, Веласкеса и Босха." },
+      { name: "Пласа Сибелес",        desc: "Самая известная площадь Мадрида. Фонтан Сибелес — место празднования побед Реала." },
+      { name: "Храм Дебода",            desc: "Египетский храм в сердце Мадрида. Подарок Египта Испании, одно из лучших мест для наблюдения заката." },
+      { name: "Королевский дворец",          desc: "Официальная резиденция испанской королевской семьи, построенная в XVIII веке. Крупнейший королевский дворец Западной Европы." },
+      { name: "Стадион Сантьяго Бернабеу",  desc: "Стадион Реала, одно из самых посещаемых мест города. Храм футбола с экскурсиями круглый год." },
     ],
   },
 };
 
-// ── Component ─────────────────────────────────────────────────────────────────
-
 export default function Top10Page({ onBack }: Top10PageProps) {
   const { lang } = useLanguage();
-  const data = TOP10_DATA[lang] ?? TOP10_DATA["es"];
+  const content = TOP10_DATA[lang] || TOP10_DATA.es;
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "oklch(0.08 0 0)", maxWidth: 480, margin: "0 auto" }}
-    >
-      {/* Header */}
-      <header
-        className="flex items-center justify-between px-5 pt-8 pb-4"
-        style={{ borderBottom: "1px solid oklch(0.16 0.01 72)" }}
-      >
-        <BackButton onClick={onBack} />
-        <img
-          src={LOGO_BLANCO}
-          alt="La Fonda de los Príncipes"
-          className="h-8"
-          style={{ opacity: 0.85 }}
-        />
-        <LanguageSelector />
-      </header>
+    <PageLayout onBack={onBack}>
+      <PageTitle>{content.title}</PageTitle>
+      <p style={{ ...ps.muted, marginBottom: "1rem" }}>{content.subtitle}</p>
 
-      {/* Content */}
-      <main className="flex-1 px-6 pt-10 pb-12">
-        {/* Title */}
-        <h1
-          className="mb-2"
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontWeight: 300,
-            fontSize: "clamp(1.8rem, 6vw, 2.4rem)",
-            color: "oklch(0.96 0.025 85)",
-            lineHeight: 1.15,
-            letterSpacing: "-0.01em",
-          }}
-        >
-          {data.title}
-        </h1>
+      <div className="space-y-4 mt-8">
+        {content.items.map((item, index) => (
+          <div key={index} style={ps.card}>
+            <h3 style={{ ...ps.body, fontWeight: '500', color: 'var(--foreground)' }}>{item.name}</h3>
+            <p style={{ ...ps.muted, marginTop: '0.25rem' }}>{item.desc}</p>
+          </div>
+        ))}
+      </div>
 
-        <p
-          className="mb-6"
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontWeight: 300,
-            fontSize: "0.85rem",
-            color: "oklch(0.55 0.015 85)",
-            letterSpacing: "0.02em",
-          }}
-        >
-          {data.subtitle}
-        </p>
-
-        {/* Gold divider */}
-        <div
-          className="mb-8"
-          style={{
-            height: 1,
-            background: "linear-gradient(90deg, var(--gold), transparent)",
-            width: "60%",
-          }}
-        />
-
-        {/* Top 10 list */}
-        <div className="flex flex-col gap-5">
-          {data.items.map((item, i) => (
-            <div
-              key={i}
-              className="flex gap-4"
-              style={{
-                paddingBottom: "1.25rem",
-                borderBottom: i < data.items.length - 1 ? "1px solid oklch(0.14 0.01 72)" : "none",
-              }}
-            >
-              {/* Number */}
-              <div
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontWeight: 300,
-                  fontSize: "1.6rem",
-                  color: "var(--gold)",
-                  opacity: 0.5,
-                  lineHeight: 1,
-                  minWidth: "2rem",
-                  paddingTop: "0.1rem",
-                }}
-              >
-                {i + 1}
-              </div>
-
-              {/* Text */}
-              <div>
-                <div className="flex items-center gap-1.5 mb-1">
-                  <MapPin size={11} strokeWidth={1.5} style={{ color: "var(--gold)", opacity: 0.7, flexShrink: 0 }} />
-                  <span
-                    style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontWeight: 500,
-                      fontSize: "1.05rem",
-                      color: "oklch(0.92 0.025 85)",
-                      letterSpacing: "0.01em",
-                    }}
-                  >
-                    {item.name}
-                  </span>
-                </div>
-                <p
-                  style={{
-                    fontFamily: "'DM Sans', sans-serif",
-                    fontWeight: 300,
-                    fontSize: "0.85rem",
-                    color: "oklch(0.62 0.012 85)",
-                    lineHeight: 1.65,
-                    margin: 0,
-                  }}
-                >
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Link to full guide */}
-        <a
-          href={data.guide_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full mt-10 rounded-sm transition-all duration-200"
-          style={{
-            background: "transparent",
-            border: "1px solid var(--gold)",
-            color: "var(--gold)",
-            padding: "0.9rem 1.5rem",
-            fontFamily: "'DM Sans', sans-serif",
-            fontWeight: 400,
-            fontSize: "0.8rem",
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            textDecoration: "none",
-            display: "flex",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.background = "var(--gold)";
-            (e.currentTarget as HTMLAnchorElement).style.color = "oklch(0.08 0 0)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
-            (e.currentTarget as HTMLAnchorElement).style.color = "var(--gold)";
-          }}
-        >
-          <ExternalLink size={14} strokeWidth={1.5} />
-          {data.guide_label}
-        </a>
-      </main>
-    </div>
+      <a href={content.guide_url} target="_blank" rel="noopener noreferrer" style={{ ...ps.actionButton, marginTop: '2rem' }}>
+        {content.guide_label}
+        <ExternalLink size={16} />
+      </a>
+    </PageLayout>
   );
 }

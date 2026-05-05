@@ -2,11 +2,10 @@
  * CampanadasPage — "Noche en Sol" design
  * Los balcones y las campanadas de La Fonda de los Príncipes
  */
-import BackButton from "@/components/BackButton";
 import { useLanguage } from "@/contexts/LanguageContext";
-import LanguageSelector from "@/components/LanguageSelector";
-
-const LOGO_BLANCO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/logo-blanco-hd_6b7412e4.png";
+import PageLayout from "@/components/PageLayout";
+import PageTitle from "@/components/PageTitle";
+import { ps } from "@/lib/pageStyles";
 
 interface CampanadasPageProps {
   onBack: () => void;
@@ -277,28 +276,7 @@ export default function CampanadasPage({ onBack }: CampanadasPageProps) {
   };
 
   return (
-    <div
-      className="flex flex-col"
-      style={{ background: "oklch(0.08 0 0)", maxWidth: 480, margin: "0 auto", minHeight: "100dvh" }}
-    >
-      {/* Header */}
-      <header
-        className="flex items-center justify-between px-5 pt-8 pb-4"
-        style={{ borderBottom: "1px solid oklch(0.16 0.01 72)" }}
-      >
-        <BackButton onClick={onBack} />
-
-        <img
-          src={LOGO_BLANCO}
-          alt="La Fonda de los Príncipes"
-          style={{ height: 32, opacity: 0.85 }}
-        />
-
-        <LanguageSelector />
-      </header>
-
-      {/* Content */}
-      <main className="flex-1 px-6 pt-10 pb-14">
+    <PageLayout onBack={onBack}>
         {/* Title */}
         <h1
           className="mb-4"
@@ -306,7 +284,7 @@ export default function CampanadasPage({ onBack }: CampanadasPageProps) {
             fontFamily: "'Cormorant Garamond', serif",
             fontWeight: 300,
             fontSize: "clamp(1.6rem, 5.5vw, 2.2rem)",
-            color: "oklch(0.96 0.025 85)",
+            color: "var(--foreground)",
             lineHeight: 1.2,
           }}
         >
@@ -331,7 +309,7 @@ export default function CampanadasPage({ onBack }: CampanadasPageProps) {
             fontStyle: "italic",
             fontWeight: 400,
             fontSize: "clamp(1.05rem, 3.5vw, 1.2rem)",
-            color: "oklch(0.82 0.025 85)",
+            color: "var(--card-foreground)",
             lineHeight: 1.7,
           }}
         >
@@ -347,7 +325,7 @@ export default function CampanadasPage({ onBack }: CampanadasPageProps) {
                 fontFamily: "'DM Sans', sans-serif",
                 fontWeight: 300,
                 fontSize: "0.93rem",
-                color: "oklch(0.68 0.015 85)",
+                color: "var(--muted-foreground)",
                 lineHeight: 1.85,
               }}
             >
@@ -359,7 +337,7 @@ export default function CampanadasPage({ onBack }: CampanadasPageProps) {
         {/* Curiosities */}
         <div
           className="pt-8"
-          style={{ borderTop: "1px solid oklch(0.16 0.01 72)" }}
+          style={{ borderTop: "1px solid var(--border)" }}
         >
           <h2
             className="mb-6"
@@ -367,7 +345,7 @@ export default function CampanadasPage({ onBack }: CampanadasPageProps) {
               fontFamily: "'Cormorant Garamond', serif",
               fontWeight: 400,
               fontSize: "clamp(1.2rem, 4vw, 1.4rem)",
-              color: "oklch(0.88 0.025 85)",
+              color: "var(--card-foreground)",
             }}
           >
             {c.curiositiesTitle}
@@ -380,7 +358,7 @@ export default function CampanadasPage({ onBack }: CampanadasPageProps) {
                 className="flex gap-3"
                 style={{
                   paddingBottom: "1rem",
-                  borderBottom: i < c.curiosities.length - 1 ? "1px solid oklch(0.13 0.008 72)" : "none",
+                  borderBottom: i < c.curiosities.length - 1 ? "1px solid var(--border)" : "none",
                 }}
               >
                 <span
@@ -402,7 +380,7 @@ export default function CampanadasPage({ onBack }: CampanadasPageProps) {
                     fontFamily: "'DM Sans', sans-serif",
                     fontWeight: 300,
                     fontSize: "0.9rem",
-                    color: "oklch(0.65 0.012 85)",
+                    color: "var(--muted-foreground)",
                     lineHeight: 1.8,
                   }}
                 >
@@ -412,7 +390,6 @@ export default function CampanadasPage({ onBack }: CampanadasPageProps) {
             ))}
           </div>
         </div>
-      </main>
-    </div>
+    </PageLayout>
   );
 }

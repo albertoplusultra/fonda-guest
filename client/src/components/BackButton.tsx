@@ -18,20 +18,20 @@ export default function BackButton({ onClick }: BackButtonProps) {
       className="flex items-center gap-1.5 text-xs tracking-widest uppercase transition-all duration-200"
       style={{
         fontFamily: "'DM Sans', sans-serif",
-        color: "oklch(0.72 0.025 85)",
+        color: "var(--muted-foreground)",
         letterSpacing: "0.1em",
-        border: "1px solid oklch(0.30 0.015 72)",
+        border: "1px solid var(--border)",
         borderRadius: "0.35rem",
         padding: "0.35rem 0.75rem",
-        background: "oklch(0.11 0 0)",
+        background: "var(--card)",
       }}
       onMouseEnter={(e) => {
         (e.currentTarget as HTMLButtonElement).style.color = "var(--gold)";
         (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--gold)";
       }}
       onMouseLeave={(e) => {
-        (e.currentTarget as HTMLButtonElement).style.color = "oklch(0.72 0.025 85)";
-        (e.currentTarget as HTMLButtonElement).style.borderColor = "oklch(0.30 0.015 72)";
+        (e.currentTarget as HTMLButtonElement).style.color = "var(--muted-foreground)";
+        (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--border)";
       }}
     >
       <ArrowLeft size={13} />

@@ -68,6 +68,7 @@ export interface Translations {
     postal:          string;
     sostenibilidad:  string;
     top10:           string;
+    servicios:       string;
     servicio:        string;
     transporte:      string;
   };
@@ -121,6 +122,7 @@ const T: Record<LangCode, Translations> = {
       postal:          "Postales",
       sostenibilidad:  "Sostenibilidad",
       top10:           "Top 10",
+      servicios:       "Servicios",
       servicio:        "Room Service",
       transporte:      "Moverse",
     },
@@ -170,7 +172,8 @@ const T: Record<LangCode, Translations> = {
       campanadas:      "The Bells",
       postal:          "Postcards",
       sostenibilidad:  "Sustainability",
-      top10:           "Top 10",
+      top10:           "Top 10 Madrid",
+      servicios:       "Services",
       servicio:        "Room Service",
       transporte:      "Getting around",
     },
@@ -220,7 +223,8 @@ const T: Record<LangCode, Translations> = {
       campanadas:      "Les Cloches",
       postal:          "Cartes postales",
       sostenibilidad:  "Durabilité",
-      top10:           "Top 10",
+      top10:           "Top 10 Madrid",
+      servicios:       "Services",
       servicio:        "Room Service",
       transporte:      "Se déplacer",
     },
@@ -270,7 +274,8 @@ const T: Record<LangCode, Translations> = {
       campanadas:      "Die Glocken",
       postal:          "Postkarten",
       sostenibilidad:  "Nachhaltigkeit",
-      top10:           "Top 10",
+      top10:           "Top 10 Madrid",
+      servicios:       "Zimmerservice",
       servicio:        "Room Service",
       transporte:      "Verkehr",
     },
@@ -320,7 +325,8 @@ const T: Record<LangCode, Translations> = {
       campanadas:      "Le Campane",
       postal:          "Cartoline",
       sostenibilidad:  "Sostenibilità",
-      top10:           "Top 10",
+      top10:           "Top 10 Madrid",
+      servicios:       "Servizi",
       servicio:        "Room Service",
       transporte:      "Trasporti",
     },
@@ -370,7 +376,8 @@ const T: Record<LangCode, Translations> = {
       campanadas:      "Os Sinos",
       postal:          "Postais",
       sostenibilidad:  "Sustentabilidade",
-      top10:           "Top 10",
+      top10:           "Top 10 Madrid",
+      servicios:       "Serviços",
       servicio:        "Room Service",
       transporte:      "Transportes",
     },
@@ -421,7 +428,8 @@ const T: Record<LangCode, Translations> = {
       postal:          "明信片",
       sostenibilidad:  "可持续发展",
       top10:           "Top 10",
-      servicio:        "Room Service",
+      servicios:       "客房服务",
+      servicio:        "送餐服务",
       transporte:      "交通",
     },
     detail: {
@@ -471,7 +479,8 @@ const T: Record<LangCode, Translations> = {
       postal:          "ポストカード",
       sostenibilidad:  "サステナビリティ",
       top10:           "Top 10",
-      servicio:        "Room Service",
+      servicios:       "客室サービス",
+      servicio:        "ルームサービス",
       transporte:      "交通",
     },
     detail: {
@@ -520,8 +529,9 @@ const T: Record<LangCode, Translations> = {
       campanadas:      "الأجراس",
       postal:          "البطاقات البريدية",
       sostenibilidad:  "الاستدامة",
-      top10:           "Top 10",
-      servicio:        "Room Service",
+      top10:           "أفضل 10",
+      servicios:       "خدمات الغرفة",
+      servicio:        "خدمة الغرف",
       transporte:      "المواصلات",
     },
     detail: {
@@ -570,8 +580,9 @@ const T: Record<LangCode, Translations> = {
       campanadas:      "Колокола",
       postal:          "Открытки",
       sostenibilidad:  "Устойчивость",
-      top10:           "Top 10",
-      servicio:        "Room Service",
+      top10:           "Топ 10",
+      servicios:       "Услуги номера",
+      servicio:        "Обслуживание в номере",
       transporte:      "Транспорт",
     },
     detail: {

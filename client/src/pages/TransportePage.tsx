@@ -4,8 +4,12 @@
  * Sections: Metro · Bus · Cercanías · Taxi · Aeropuerto · Consejos de ahorro
  */
 import { Train, Bus, Car, Plane, Bike, Banknote, MapPin, Smartphone } from "lucide-react";
-import BackButton from "@/components/BackButton";
 import { useLanguage } from "@/contexts/LanguageContext";
+import PageLayout from "@/components/PageLayout";
+import PageTitle from "@/components/PageTitle";
+import { ps } from "@/lib/pageStyles";
+import InfoCard from "@/components/InfoCard";
+import SectionLabel from "@/components/SectionLabel";
 
 interface TransportSection {
   icon: React.ReactNode;
@@ -23,7 +27,6 @@ interface TransporteContent {
   apps: { title: string; items: string[] };
 }
 
-const GOLD = "var(--gold)";
 const ICON_SIZE = 18;
 const ICON_STROKE = 1.25;
 
@@ -44,7 +47,7 @@ function buildContent(lang: string): TransporteContent {
             { label: "Tarjeta Multi (soporte)", value: "2,50 € (reutilizable 10 años)" },
             { label: "Horario", value: "6:00 – 1:30 h (último tren)" },
           ],
-          note: "La Tarjeta Multi se compra en cualquier máquina del metro. Puedes elegir el idioma en pantalla.",
+          note: "La Tarjeta Multi se compra en cualquier máquina del metro. Puedes elegir el idioma en pantalla. El horario de apertura de la parada de Sol puede verse afectado por eventos en la Plaza del Sol.",
         },
         {
           icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
@@ -143,7 +146,7 @@ function buildContent(lang: string): TransporteContent {
             { label: "Tarjeta Multi (card)", value: "€2.50 (reusable for 10 years)" },
             { label: "Hours", value: "6:00 AM – 1:30 AM (last train)" },
           ],
-          note: "Buy the Tarjeta Multi at any metro machine. You can select English on the screen.",
+          note: "Buy the Tarjeta Multi at any metro machine. You can select English on the screen. Opening hours of Sol station may be affected by events taking place in Plaza del Sol.",
         },
         {
           icon: <Bus size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
@@ -206,9 +209,9 @@ function buildContent(lang: string): TransporteContent {
             { label: "Atocha (AVE & Regional trains)", value: "Metro L1 from Sol — 2 stops (3 min)" },
             { label: "Chamartín (AVE & Long Distance)", value: "Metro L10 from Sol — 6 stops (12 min)" },
             { label: "Tickets", value: "renfe.com, RENFE app or ticket offices at the station" },
-            { label: "Luggage", value: "Leave bags at reception and travel light" },
+            { label: "Luggage", value: "Leave your bags at reception and travel light" },
           ],
-          note: "Atocha is the main station for high-speed trains south (Seville, Málaga, Valencia). Chamartín connects north (Barcelona, Bilbao, San Sebastián).",
+          note: "Atocha is the main station for high-speed trains to the south (Seville, Málaga, Valencia). Chamartín connects to the north (Barcelona, Bilbao, San Sebastián).",
         }
       ],
       tips: {
@@ -413,7 +416,7 @@ function buildContent(lang: string): TransporteContent {
           "Wenn Sie die U-Bahn mehr als 5 Mal nutzen, ist die 10-Fahrten-Karte immer günstiger.",
           "Der Touristenpass (1–7 Tage) umfasst Metro, Bus, Cercanías und den Flughafenzuschlag. Ab 10 €/Tag. Erhältlich an jedem U-Bahn-Automaten ('Tourist Pass' wählen) oder in den Touristeninformationsbüros.",
           "Bus 0 ist kostenlos zwischen Atocha und Moncloa über die Gran Vía.",
-          "Von Sol aus können Sie zu vielen Orten laufen: Retiro (20 Min.), Prado (15 Min.).",
+          "Von Sol aus können Sie zu vielen Orten laufen: Retiro (20 min), Prado (15 min).",
           "Die Tarjeta Multi kostet 2,50 € und hält 10 Jahre. Behalten Sie sie für Ihren nächsten Besuch.",
         ],
       },
@@ -481,7 +484,7 @@ function buildContent(lang: string): TransporteContent {
             { label: "Bus Express 203", value: "~35 min · 5 € · Fermate Cibeles e Atocha" },
             { label: "Taxi (tariffa fissa)", value: "33 € fino a La Fonda" },
           ],
-          note: "Da T4, prendi il Cercanías C1 o C10 fino a Chamartín, poi cambia al metro L10 o L1 — diretto a Sol senza passare per Atocha.",
+          note: "Da T4, prendi il Cercanías C1 o C10 fino a Chamartín, poi cambia con la metro L10 o L1 — diretto a Sol senza passare per Atocha.",
         },
         {
           icon: <Bike size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
@@ -650,622 +653,134 @@ function buildContent(lang: string): TransporteContent {
           icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
           title: "近郊铁路（Cercanías）",
           items: [
-            { label: "最低票价", value: "从1.60 €起" },
-            { label: "付款方式", value: "银行卡直接在闸机刷卡" },
-            { label: "主要车站", value: "Atocha站和Chamartín站" },
-            { label: "适合", value: "快速穿越城市" },
+            { label: "最低票价", value: "1.60 €起" },
+            { label: "支付方式", value: "在闸机口直接刷银行卡" },
+            { label: "主要车站", value: "Atocha和Chamartín" },
+            { label: "最适合", value: "快速穿越城市" },
           ],
-          note: "可直接用银行卡在闸机刷卡，无需购票。",
+          note: "您可以在闸机口刷银行卡支付，无需购票。",
         },
         {
           icon: <Car size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
           title: "出租车和网约车",
           items: [
-            { label: "市区费用", value: "约10 – 20 €" },
-            { label: "机场固定价格", value: "33 €（M-30环路内任意地点）" },
-            { label: "夜间/节假日费率", value: "费率2（较贵）" },
-            { label: "应用程序", value: "FreeNow、Uber、Cabify" },
+            { label: "市内费用", value: "约10 – 20 €" },
+            { label: "机场固定费用", value: "33 € 到M-30环路内任何地点" },
+            { label: "夜间/节假日费率", value: "费率2（更高）" },
+            { label: "应用", value: "FreeNow, Uber, Cabify" },
           ],
-          note: "出租车为白色车身配红色斜条纹。Uber和Cabify价格相近。",
+          note: "出租车为白色，带有红色斜条纹。Uber和Cabify价格相似。",
         },
         {
           icon: <Plane size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
           title: "从机场出发",
           items: [
-            { label: "地铁T1-T2-T3 → Sol", value: "约45分钟 · 5 €（票价+3 €附加费）" },
-            { label: "近郊铁路T4 → Sol", value: "约30分钟 · 2.60 €（银行卡）" },
-            { label: "机场快线203路", value: "约35分钟 · 5 €，停靠Cibeles和Atocha" },
-            { label: "出租车（固定价格）", value: "33 €至La Fonda" },
+            { label: "地铁 T1-T2-T3 → Sol", value: "约45分钟 · 5 €（车票+3 €附加费）" },
+            { label: "近郊铁路 T4 → Sol", value: "约30分钟 · 2.60 €（刷银行卡）" },
+            { label: "机场快线 203", value: "约35分钟 · 5 € · 在Cibeles和Atocha停靠" },
+            { label: "出租车（固定费用）", value: "33 € 到La Fonda" },
           ],
-          note: "从T4出发，乘Cercanías C1或C10至Chamartín，再换乘地铁L10或L1直达Sol，无需经过Atocha。",
+          note: "从T4航站楼，乘坐Cercanías C1或C10到Chamartín，然后换乘地铁L10或L1 — 直达Sol，无需经过Atocha。",
         },
         {
           icon: <Bike size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "BiciMAD和电动滑板车",
+          title: "BiciMAD和滑板车",
           items: [
-            { label: "BiciMAD（电动自行车）", value: "2 €激活 + 0.04 €/分钟" },
-            { label: "取车地点", value: "太阳门广场及周边站点" },
-            { label: "电动滑板车", value: "Lime、Voi、Tier — 该区域均有" },
+            { label: "BiciMAD（电动自行车）", value: "2 €激活费 + 0.04 €/分钟" },
+            { label: "取车点", value: "太阳门广场及周边站点" },
+            { label: "滑板车", value: "Lime, Voi, Tier — 该区域可用" },
           ],
-          note: "适合短途出行。丽池公园和西部公园有专用自行车道。",
+          note: "适合短途出行。丽池公园和西园有自行车道。",
         },
         {
           icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
           title: "火车站",
           items: [
-            { label: "Atocha站（高铁和区域列车）", value: "从Sol乘地铁L1 — 2站（3分钟）" },
-            { label: "Chamartín站（高铁和长途列车）", value: "从Sol乘地铁L10 — 6站（12分钟）" },
-            { label: "购票", value: "renfe.com、RENFE应用程序或车站售票处" },
+            { label: "Atocha（AVE和地区列车）", value: "从Sol乘地铁L1 — 2站（3分钟）" },
+            { label: "Chamartín（AVE和长途列车）", value: "从Sol乘地铁L10 — 6站（12分钟）" },
+            { label: "购票", value: "renfe.com、RENFE应用或车站售票处" },
             { label: "行李", value: "可将行李寄存在前台，轻装出行" },
           ],
-          note: "Atocha是前往南部（塞维利亚、马拉加、瓦伦西亚）高铁的主要车站。Chamartín连接北部（巴塞罗那、毕尔巴鄂、圣塞巴斯蒂安）。",
+          note: "Atocha是前往南部（塞维利亚、马拉加、瓦伦西亚）的高速列车主站。Chamartín连接北部（巴塞罗那、毕尔巴鄂、圣塞瓦斯蒂安）。",
         }
       ],
       tips: {
-        title: "我们的省钱建议",
+        title: "省钱小贴士",
         items: [
-          "如果地铁乘坐超过5次，10次卡总比单程票划算。",
-          "旅游通票（1至7天）涵盖地铁、公交、近郊铁路及机场附加费。每天从10 €起。可在任何地铁自动售票机购买（选择'Tourist Pass'）或在城市旅游信息中心购买。",
-          "0路公交在Atocha和Moncloa之间（途经格兰大道）完全免费。",
-          "从Sol步行可达许多景点：丽池公园（20分钟）、普拉多博物馆（15分钟）。",
-          "Tarjeta Multi只需2.50 €，可用10年。下次来马德里时还能用。",
+          "如果乘坐地铁超过5次，10次卡总是比单程票便宜。",
+          "游客通票（1-7天）包括地铁、公交、近郊铁路和机场附加费。每天10欧元起。可在任何地铁自动售票机（选择'Tourist Pass'）或市旅游信息中心购买。",
+          "0路公交在Atocha和Moncloa之间经格兰大道完全免费。",
+          "从Sol可以步行到许多地方：丽池公园（20分钟）、普拉多博物馆（15分钟）、El Rastro市场（15分钟）。",
+          "Tarjeta Multi交通卡售价2.50欧元，有效期10年。请保留以备下次访问使用。",
         ],
       },
       apps: {
-        title: "实用应用程序",
+        title: "实用应用",
         items: ["Citymapper — 实时路线", "Moovit — 时刻表和站点", "Google Maps — 在马德里完美运行", "FreeNow — 官方出租车"],
       },
     },
-    ja: {
-      title: "マドリードの移動ガイド",
-      subtitle: "プエルタ・デル・ソルから、街全体があなたの足元に",
-      fromHotel: "La Fondaから",
-      sections: [
-        {
-          icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "地下鉄（メトロ）",
-          items: [
-            { label: "最寄り駅", value: "Sol駅（L1・L2・L3）— 徒歩2分" },
-            { label: "Aゾーン片道", value: "1.50 €" },
-            { label: "10回カード", value: "7.30 €（1回0.73 €）" },
-            { label: "Tarjeta Multi（カード）", value: "2.50 €（10年間再利用可）" },
-            { label: "運行時間", value: "6:00 – 1:30（終電）" },
-          ],
-          note: "Tarjeta Multiはどの地下鉄の券売機でも購入できます。日本語を選択できます。",
-        },
-        {
-          icon: <Bus size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "市バス（EMT）",
-          items: [
-            { label: "片道チケット", value: "1.50 €（バス内でカード払い可）" },
-            { label: "10回カード", value: "7.30 €" },
-            { label: "0番バス（無料）", value: "Atocha → グラン・ビア → Moncloa（電動）" },
-            { label: "夜間サービス", value: "Búhos（N）夜行バスが終夜運行" },
-          ],
-          note: "0番バスは完全無料でグラン・ビアを通ります。前面に001と表示されています。",
-        },
-        {
-          icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "近郊列車（Cercanías）",
-          items: [
-            { label: "最低運賃", value: "1.60 €から" },
-            { label: "支払い方法", value: "改札でデビットカードをタッチ" },
-            { label: "主要駅", value: "AtocharとChamartín" },
-            { label: "おすすめ用途", value: "市内を素早く移動する場合" },
-          ],
-          note: "改札でデビットカードをタッチするだけで乗車できます。切符購入不要。",
-        },
-        {
-          icon: <Car size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "タクシーと配車サービス",
-          items: [
-            { label: "市内料金", value: "約10 – 20 €" },
-            { label: "空港（固定料金）", value: "M-30環状道路内のどこへでも33 €" },
-            { label: "夜間・祝日料金", value: "料金2（高め）" },
-            { label: "アプリ", value: "FreeNow、Uber、Cabify" },
-          ],
-          note: "タクシーは白地に赤い斜めストライプ。UberとCabifyも同程度の料金です。",
-        },
-        {
-          icon: <Plane size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "空港から",
-          items: [
-            { label: "地下鉄T1-T2-T3 → Sol", value: "約45分 · 5 €（チケット+3 €追加料金）" },
-            { label: "Cercanías T4 → Sol", value: "約30分 · 2.60 €（カード払い）" },
-            { label: "空港急行バス203", value: "約35分 · 5 €、CibelesとAtocha停車" },
-            { label: "タクシー（固定料金）", value: "La Fondaまで33 €" },
-          ],
-          note: "T4からはCercanías C1またはC10線でChamartínへ、その後地下鉄L10またはL1でSolへ直行。Atochaを経由せずに行けます。",
-        },
-        {
-          icon: <Bike size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "BiciMADと電動スクーター",
-          items: [
-            { label: "BiciMAD（電動自転車）", value: "2 €アクティベーション + 0.04 €/分" },
-            { label: "乗り場", value: "プエルタ・デル・ソル広場周辺のステーション" },
-            { label: "電動スクーター", value: "Lime、Voi、Tier — エリア内で利用可" },
-          ],
-          note: "短距離移動に最適。レティーロ公園と西部公園には自転車専用レーンがあります。",
-        },
-        {
-          icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "鉄道駅",
-          items: [
-            { label: "Atocha駅（AVEと地域列車）", value: "SolからメトロL1 — 2駅（3分）" },
-            { label: "Chamartín駅（AVEと長距離列車）", value: "SolからメトロL10 — 6駅（12分）" },
-            { label: "チケット", value: "renfe.com、RENFEアプリ、または駅の窓口" },
-            { label: "荷物", value: "フロントに荷物を預けて身軽に移動" },
-          ],
-          note: "Atochaは南部（セビリア、マラガ、バレンシア）への高速鉄道の主要駅です。Chamartínは北部（バルセロナ、ビルバオ、サン・セバスティアン）に接続します。",
-        }
-      ],
-      tips: {
-        title: "節約のためのアドバイス",
-        items: [
-          "地下鉄を5回以上利用する場合、10回カードは常に片道チケットより安くなります。",
-          "観光パス（1〜7日間）は地下鉄・バス・Cercanías・空港追加料金を含みます。1日10 €から。地下鉄の券売機（'Tourist Pass'を選択）または観光案内所で購入できます。",
-          "0番バスはAtocha〜Moncloa間（グラン・ビア経由）が完全無料です。",
-          "Solから歩いて行ける場所が多い：レティーロ公園（20分）、プラド美術館（15分）。",
-          "Tarjeta Multiは2.50 €で10年間使えます。次回の訪問のために保管しておきましょう。",
-        ],
-      },
-      apps: {
-        title: "便利なアプリ",
-        items: ["Citymapper — リアルタイムルート", "Moovit — 時刻表と停留所", "Google Maps — マドリードで完璧に機能", "FreeNow — 公式タクシー"],
-      },
-    },
-    ar: {
-      title: "التنقل في مدريد",
-      subtitle: "من بويرتا ديل سول، المدينة كلها عند قدميك",
-      fromHotel: "من La Fonda",
-      sections: [
-        {
-          icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "المترو",
-          items: [
-            { label: "أقرب محطة", value: "Sol (L1، L2، L3) — دقيقتان سيراً" },
-            { label: "تذكرة فردية المنطقة A", value: "1.50 €" },
-            { label: "بطاقة 10 رحلات", value: "7.30 € (0.73 € / رحلة)" },
-            { label: "Tarjeta Multi (البطاقة)", value: "2.50 € (قابلة لإعادة الاستخدام 10 سنوات)" },
-            { label: "مواعيد التشغيل", value: "6:00 – 1:30 (آخر قطار)" },
-          ],
-          note: "اشترِ Tarjeta Multi من أي آلة في المترو. يمكنك اختيار اللغة العربية على الشاشة.",
-        },
-        {
-          icon: <Bus size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "الحافلة (EMT)",
-          items: [
-            { label: "تذكرة فردية", value: "1.50 € (الدفع بالبطاقة داخل الحافلة)" },
-            { label: "10 رحلات", value: "7.30 €" },
-            { label: "الحافلة 0 (مجانية)", value: "Atocha → غران فيا → Moncloa (كهربائية)" },
-            { label: "الخدمة الليلية", value: "حافلات Búhos (N) طوال الليل" },
-          ],
-          note: "الحافلة 0 مجانية تماماً وتمر بغران فيا. ابحث عن الرقم 001 في المقدمة.",
-        },
-        {
-          icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "قطار الضواحي (Cercanías)",
-          items: [
-            { label: "الحد الأدنى للتعرفة", value: "من 1.60 €" },
-            { label: "طريقة الدفع", value: "البطاقة البنكية مباشرة عند البوابات" },
-            { label: "المحطات الرئيسية", value: "Atocha و Chamartín" },
-            { label: "الأفضل لـ", value: "عبور المدينة بسرعة" },
-          ],
-          note: "يمكنك الدفع بلمس بطاقتك البنكية عند البوابات — دون الحاجة لشراء تذكرة.",
-        },
-        {
-          icon: <Car size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "سيارة الأجرة والتطبيقات",
-          items: [
-            { label: "التعرفة الحضرية", value: "حوالي 10 – 20 €" },
-            { label: "المطار (سعر ثابت)", value: "33 € إلى أي نقطة داخل الطريق الدائري M-30" },
-            { label: "التعرفة الليلية / العطل", value: "التعرفة 2 (أغلى)" },
-            { label: "التطبيقات", value: "FreeNow، Uber، Cabify" },
-          ],
-          note: "سيارات الأجرة بيضاء مع شريط أحمر قطري. Uber و Cabify بأسعار مماثلة.",
-        },
-        {
-          icon: <Plane size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "من المطار",
-          items: [
-            { label: "Cercanías T4 → Sol ★ موصى به", value: "~30 دقيقة · 2.60 € (بطاقة بنكية)" },
-            { label: "مترو T1-T2-T3 → Sol", value: "~45 دقيقة · 5 € (تذكرة + رسوم 3 €)" },
-            { label: "حافلة المطار السريعة 203", value: "~35 دقيقة · 5 €، تتوقف في Cibeles و Atocha" },
-            { label: "سيارة أجرة (سعر ثابت)", value: "33 € إلى La Fonda" },
-          ],
-          note: "الخيار الأفضل: من T4 خذ Cercanías C1 أو C10 إلى Chamartín، ثم انتقل إلى Cercanías C4 مباشرة إلى Sol دون مترو ودون المرور بـ Atocha.",
-        },
-        {
-          icon: <Bike size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "BiciMAD والسكوترات",
-          items: [
-            { label: "BiciMAD (دراجة كهربائية)", value: "2 € تفعيل + 0.04 €/دقيقة" },
-            { label: "نقطة الاستلام", value: "محطة في Plaza del Sol والمحيط" },
-            { label: "السكوترات", value: "Lime، Voi، Tier — متاحة في المنطقة" },
-          ],
-          note: "مثالية للمسافات القصيرة. حديقة El Retiro وParque del Oeste لديهما مسارات للدراجات.",
-        },
-        {
-          icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "محطات القطار",
-          items: [
-            { label: "Atocha (AVE والقطارات الإقليمية)", value: "مترو L1 من Sol — محطتان (3 دقائق)" },
-            { label: "Chamartín (AVE والمسافات الطويلة)", value: "مترو L10 من Sol — 6 محطات (12 دقيقة)" },
-            { label: "تذاكر", value: "renfe.com، تطبيق RENFE أو شبابيك المحطة" },
-            { label: "الأمتعة", value: "اترك الحقائب في الاستقبال وسافر خفيفاً" },
-          ],
-          note: "Atocha هي المحطة الرئيسية للقطارات فائقة السرعة جنوباً (إشبيلية، مالقة، بلنسية). Chamartín تربط بالشمال (برشلونة، بلباو، سان سيباستيان).",
-        }
-      ],
-      tips: {
-        title: "نصائحنا لتوفير المال",
-        items: [
-          "إذا كنت ستستخدم المترو أكثر من 5 مرات، فإن بطاقة 10 رحلات دائماً أرخص من التذاكر الفردية.",
-          "تذكرة السياحة (1 إلى 7 أيام) تشمل المترو والحافلة و Cercanías ورسوم المطار. من 10 €/يوم. اشترها من أي آلة في المترو (اختر 'Tourist Pass') أو من مكاتب المعلومات السياحية.",
-          "الحافلة 0 مجانية بين Atocha و Moncloa عبر غران فيا.",
-          "من Sol يمكنك المشي إلى أماكن كثيرة: El Retiro (20 دقيقة)، Prado (15 دقيقة).",
-          "Tarjeta Multi بـ 2.50 € وتدوم 10 سنوات. احتفظ بها لزيارتك القادمة.",
-        ],
-      },
-      apps: {
-        title: "تطبيقات مفيدة",
-        items: ["Citymapper — مسارات في الوقت الفعلي", "Moovit — جداول المواعيد والمحطات", "Google Maps — يعمل بشكل مثالي في مدريد", "FreeNow — سيارات الأجرة الرسمية"],
-      },
-    },
-    ru: {
-      title: "Передвижение по Мадриду",
-      subtitle: "С Пуэрта-дель-Соль весь город у ваших ног",
-      fromHotel: "Из La Fonda",
-      sections: [
-        {
-          icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "Метро",
-          items: [
-            { label: "Ближайшая станция", value: "Sol (L1, L2, L3) — 2 мин пешком" },
-            { label: "Разовый билет Зона A", value: "1,50 €" },
-            { label: "Карта на 10 поездок", value: "7,30 € (0,73 € / поездка)" },
-            { label: "Tarjeta Multi (карта)", value: "2,50 € (многоразовая, 10 лет)" },
-            { label: "Время работы", value: "6:00 – 1:30 (последний поезд)" },
-          ],
-          note: "Купите Tarjeta Multi в любом автомате метро. Можно выбрать язык интерфейса.",
-        },
-        {
-          icon: <Bus size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "Городской автобус EMT",
-          items: [
-            { label: "Разовый билет", value: "1,50 € (оплата картой в автобусе)" },
-            { label: "10 поездок", value: "7,30 €" },
-            { label: "Автобус 0 (бесплатный)", value: "Atocha → Гран-Виа → Moncloa (электрический)" },
-            { label: "Ночной сервис", value: "Ночные автобусы Búhos (N) всю ночь" },
-          ],
-          note: "Автобус 0 полностью бесплатный и едет по Гран-Виа. Ищите номер 001 спереди.",
-        },
-        {
-          icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "Пригородные поезда (Cercanías)",
-          items: [
-            { label: "Минимальный тариф", value: "От 1,60 €" },
-            { label: "Оплата", value: "Банковской картой прямо на турникетах" },
-            { label: "Ключевые станции", value: "Atocha и Chamartín" },
-            { label: "Идеально для", value: "Быстрого пересечения города" },
-          ],
-          note: "Можно оплатить, приложив банковскую карту к турникету — без покупки билета.",
-        },
-        {
-          icon: <Car size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "Такси и каршеринг",
-          items: [
-            { label: "Городской тариф", value: "Около 10 – 20 €" },
-            { label: "Аэропорт (фиксированная цена)", value: "33 € до любой точки внутри M-30" },
-            { label: "Ночной / праздничный тариф", value: "Тариф 2 (дороже)" },
-            { label: "Приложения", value: "FreeNow, Uber, Cabify" },
-          ],
-          note: "Такси белые с красной диагональной полосой. Uber и Cabify предлагают аналогичные цены.",
-        },
-        {
-          icon: <Plane size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "Из аэропорта",
-          items: [
-            { label: "Cercanías T4 → Sol ★ Рекомендуем", value: "~30 мин · 2,60 € (банковская карта)" },
-            { label: "Метро T1-T2-T3 → Sol", value: "~45 мин · 5 € (билет + надбавка 3 €)" },
-            { label: "Аэроэкспресс 203", value: "~35 мин · 5 €, остановки Cibeles и Atocha" },
-            { label: "Такси (фиксированная цена)", value: "33 € до La Fonda" },
-          ],
-          note: "Лучший вариант: из T4 садитесь на Cercanías C1 или C10 до Chamartín, затем пересаживайтесь на Cercanías C4 — прямо до Sol без метро и без Atocha.",
-        },
-        {
-          icon: <Bike size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "BiciMAD и самокаты",
-          items: [
-            { label: "BiciMAD (электровелосипед)", value: "2 € активация + 0,04 €/мин" },
-            { label: "Пункт выдачи", value: "Станция на Plaza del Sol и окрестностях" },
-            { label: "Самокаты", value: "Lime, Voi, Tier — доступны в районе" },
-          ],
-          note: "Отлично подходит для коротких расстояний. В El Retiro и Parque del Oeste есть велодорожки.",
-        },
-        {
-          icon: <Train size={ICON_SIZE} strokeWidth={ICON_STROKE} />,
-          title: "Железнодорожные вокзалы",
-          items: [
-            { label: "Atocha (AVE и региональные поезда)", value: "Метро L1 от Sol — 2 остановки (3 мин)" },
-            { label: "Chamartín (AVE и дальнее следование)", value: "Метро L10 от Sol — 6 остановок (12 мин)" },
-            { label: "Билеты", value: "renfe.com, приложение RENFE или кассы на вокзале" },
-            { label: "Багаж", value: "Оставьте чемоданы на ресепшн и путешествуйте налегке" },
-          ],
-          note: "Atocha — главный вокзал для скоростных поездов на юг (Севилья, Малага, Валенсия). Chamartín связывает с севером (Барселона, Бильбао, Сан-Себастьян).",
-        }
-      ],
-      tips: {
-        title: "Наши советы по экономии",
-        items: [
-          "Если вы будете пользоваться метро более 5 раз, карта на 10 поездок всегда выгоднее разовых билетов.",
-          "Туристический абонемент (1–7 дней) включает метро, автобус, Cercanías и надбавку за аэропорт. От 10 €/день. Купить можно в любом автомате метро (выберите 'Tourist Pass') или в туристических информационных центрах.",
-          "Автобус 0 полностью бесплатный между Atocha и Moncloa через Гран-Виа.",
-          "Из Sol можно дойти пешком до многих мест: Retiro (20 мин), Прадо (15 мин).",
-          "Tarjeta Multi стоит 2,50 € и служит 10 лет. Сохраните её для следующего визита.",
-        ],
-      },
-      apps: {
-        title: "Полезные приложения",
-        items: ["Citymapper — маршруты в реальном времени", "Moovit — расписания и остановки", "Google Maps — отлично работает в Мадриде", "FreeNow — официальные такси"],
-      },
-    },
   };
-
-  return content[lang] ?? content["es"];
+  return content[lang] || content.es;
 }
 
-interface Props {
+interface TransportePageProps {
   onBack: () => void;
 }
 
-export default function TransportePage({ onBack }: Props) {
+export default function TransportePage({ onBack }: TransportePageProps) {
   const { lang } = useLanguage();
   const c = buildContent(lang);
-  const isRtl = lang === "ar";
 
   return (
-    <div
-      style={{
-        background: "oklch(0.08 0 0)",
-        minHeight: "100dvh",
-        maxWidth: 480,
-        margin: "0 auto",
-        fontFamily: "'DM Sans', sans-serif",
-        direction: isRtl ? "rtl" : "ltr",
-      }}
-    >
-      {/* Header */}
-      <div className="relative px-5 pt-6 pb-4">
-        <BackButton onClick={onBack} />
-        <div className="flex flex-col items-center text-center mt-8 mb-2">
-          <div
-            style={{
-              width: 48,
-              height: 48,
-              borderRadius: "50%",
-              border: `1px solid ${GOLD}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: 16,
-              opacity: 0.85,
-              color: GOLD,
-            }}
-          >
-            <Train size={22} strokeWidth={1.25} />
-          </div>
-          <h1
-            style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "1.7rem",
-              fontWeight: 500,
-              color: "oklch(0.93 0.03 72)",
-              letterSpacing: "0.01em",
-              marginBottom: 6,
-            }}
-          >
-            {c.title}
-          </h1>
-          <p
-            style={{
-              fontSize: "0.78rem",
-              color: "oklch(0.65 0.02 72)",
-              letterSpacing: "0.03em",
-              fontStyle: "italic",
-            }}
-          >
-            {c.subtitle}
-          </p>
-        </div>
-      </div>
+    <PageLayout onBack={onBack}>
+      <PageTitle>{c.title}</PageTitle>
+      <p style={{ ...ps.muted, marginBottom: "1rem" }}>{c.subtitle}</p>
 
-      {/* Sections */}
-      <div className="px-4 pb-6 flex flex-col gap-4">
-        {c.sections.map((section, i) => (
-          <div
-            key={i}
-            style={{
-              background: "oklch(0.11 0.005 72)",
-              border: "1px solid oklch(0.20 0.01 72)",
-              borderRadius: 10,
-              overflow: "hidden",
-            }}
-          >
-            {/* Section header */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "12px 16px",
-                borderBottom: "1px solid oklch(0.18 0.01 72)",
-                color: GOLD,
-              }}
-            >
-              {section.icon}
-              <span
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: "1rem",
-                  fontWeight: 600,
-                  letterSpacing: "0.03em",
-                  color: "oklch(0.88 0.04 72)",
-                }}
-              >
-                {section.title}
-              </span>
-            </div>
-
-            {/* Items */}
-            <div style={{ padding: "8px 0" }}>
-              {section.items.map((item, j) => (
-                <div
-                  key={j}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "baseline",
-                    gap: 8,
-                    padding: "7px 16px",
-                    borderBottom: j < section.items.length - 1 ? "1px solid oklch(0.15 0.005 72)" : "none",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "0.72rem",
-                      color: "oklch(0.55 0.015 72)",
-                      letterSpacing: "0.02em",
-                      flexShrink: 0,
-                      maxWidth: "45%",
-                    }}
-                  >
-                    {item.label}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: "0.78rem",
-                      color: "oklch(0.88 0.03 72)",
-                      fontWeight: 500,
-                      textAlign: isRtl ? "left" : "right",
-                    }}
-                  >
-                    {item.value}
-                  </span>
+      {c.sections.map((section, index) => (
+        <div key={index} style={{ marginBottom: "2.5rem" }}>
+          <SectionLabel>{section.title}</SectionLabel>
+          <InfoCard>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.9rem" }}>
+              {section.items.map((item, itemIndex) => (
+                <div key={itemIndex}>
+                  <p style={{ ...ps.body, margin: 0, fontWeight: 500 }}>{item.label}</p>
+                  <p style={{ ...ps.muted, margin: 0 }}>{item.value}</p>
                 </div>
               ))}
             </div>
-
-            {/* Note */}
             {section.note && (
-              <div
-                style={{
-                  padding: "8px 16px 12px",
-                  borderTop: "1px solid oklch(0.15 0.005 72)",
-                  display: "flex",
-                  gap: 8,
-                  alignItems: "flex-start",
-                }}
-              >
-                <MapPin size={12} strokeWidth={1.5} style={{ color: GOLD, opacity: 0.7, marginTop: 2, flexShrink: 0 }} />
-                <p
-                  style={{
-                    fontSize: "0.68rem",
-                    color: "oklch(0.55 0.015 72)",
-                    fontStyle: "italic",
-                    lineHeight: 1.5,
-                    margin: 0,
-                  }}
-                >
-                  {section.note}
-                </p>
-              </div>
+              <>
+                <div style={{ ...ps.goldLine, margin: "1.25rem 0" }} />
+                <p style={{ ...ps.muted, margin: 0, fontStyle: "italic" }}>{section.note}</p>
+              </>
             )}
-          </div>
-        ))}
-
-        {/* Tips */}
-        <div
-          style={{
-            background: "oklch(0.11 0.005 72)",
-            border: `1px solid oklch(0.30 0.03 72 / 0.5)`,
-            borderRadius: 10,
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              padding: "12px 16px",
-              borderBottom: "1px solid oklch(0.18 0.01 72)",
-            }}
-          >
-            <Banknote size={ICON_SIZE} strokeWidth={ICON_STROKE} style={{ color: GOLD }} />
-            <span
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "1rem",
-                fontWeight: 600,
-                letterSpacing: "0.03em",
-                color: "oklch(0.88 0.04 72)",
-              }}
-            >
-              {c.tips.title}
-            </span>
-          </div>
-          <div style={{ padding: "10px 16px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
-            {c.tips.items.map((tip, i) => (
-              <div key={i} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <span style={{ color: GOLD, fontSize: "0.65rem", marginTop: 3, flexShrink: 0, opacity: 0.8 }}>✦</span>
-                <p style={{ fontSize: "0.73rem", color: "oklch(0.72 0.02 72)", lineHeight: 1.55, margin: 0 }}>{tip}</p>
-              </div>
-            ))}
-          </div>
+          </InfoCard>
         </div>
+      ))}
 
-        {/* Apps */}
-        <div
-          style={{
-            background: "oklch(0.11 0.005 72)",
-            border: "1px solid oklch(0.20 0.01 72)",
-            borderRadius: 10,
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              padding: "12px 16px",
-              borderBottom: "1px solid oklch(0.18 0.01 72)",
-            }}
-          >
-            <Smartphone size={ICON_SIZE} strokeWidth={ICON_STROKE} style={{ color: GOLD }} />
-            <span
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "1rem",
-                fontWeight: 600,
-                letterSpacing: "0.03em",
-                color: "oklch(0.88 0.04 72)",
-              }}
-            >
-              {c.apps.title}
-            </span>
-          </div>
-          <div style={{ padding: "10px 16px 14px", display: "flex", flexDirection: "column", gap: 6 }}>
-            {c.apps.items.map((app, i) => (
-              <div key={i} style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <span style={{ color: GOLD, fontSize: "0.6rem", flexShrink: 0, opacity: 0.7 }}>▸</span>
-                <p style={{ fontSize: "0.73rem", color: "oklch(0.72 0.02 72)", margin: 0 }}>{app}</p>
-              </div>
+      <div style={{ marginBottom: "2.5rem" }}>
+        <SectionLabel>{c.tips.title}</SectionLabel>
+        <InfoCard>
+          <ul style={{ ...ps.body, margin: 0, paddingLeft: "1.25rem", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+            {c.tips.items.map((item, index) => (
+              <li key={index}>{item}</li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </InfoCard>
       </div>
-    </div>
+
+      <div>
+        <SectionLabel>{c.apps.title}</SectionLabel>
+        <InfoCard>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
+            {c.apps.items.map((item, index) => (
+              <div key={index} style={{ ...ps.body, background: "var(--inner-background)", border: "1px solid var(--border)", borderRadius: "0.35rem", padding: "0.4rem 0.8rem", fontSize: "0.85rem" }}>
+                {item}
+              </div>
+            ))}
+          </div>
+        </InfoCard>
+      </div>
+    </PageLayout>
   );
 }

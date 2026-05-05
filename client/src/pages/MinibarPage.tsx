@@ -1,216 +1,235 @@
 /**
  * MinibarPage — La Fonda de los Príncipes
- * Design: "Noche en Sol" — black background, gold accents, Cormorant Garamond serif
- * Shows minibar products grouped by category with prices in €
+ * Dos secciones: Bebidas y Snacks
  */
-
-import BackButton from "@/components/BackButton";
-import LanguageSelector from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";
 import type { LangCode } from "@/contexts/LanguageContext";
+import PageLayout from "@/components/PageLayout";
+import PageTitle from "@/components/PageTitle";
+import SectionLabel from "@/components/SectionLabel";
+import { ps } from "@/lib/pageStyles";
 
-const LOGO_BLANCO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/logo-blanco-hd_6b7412e4.png";
-
-// ── Local translations ────────────────────────────────────────────────────────
 const COPY: Record<LangCode, {
   title: string;
   note: string;
-  softDrinks: string;
-  alcoholic: string;
+  drinks: string;
   snacks: string;
 }> = {
-  es: { title: "Minibar", note: "Los consumos se cargarán a su habitación.", softDrinks: "Bebidas sin alcohol", alcoholic: "Bebidas con alcohol", snacks: "Snacks" },
-  en: { title: "Minibar", note: "Charges will be added to your room bill.", softDrinks: "Non-alcoholic drinks", alcoholic: "Alcoholic drinks", snacks: "Snacks" },
-  fr: { title: "Minibar", note: "Les consommations seront facturées à votre chambre.", softDrinks: "Boissons sans alcool", alcoholic: "Boissons alcoolisées", snacks: "Snacks" },
-  de: { title: "Minibar", note: "Die Kosten werden Ihrem Zimmer in Rechnung gestellt.", softDrinks: "Alkoholfreie Getränke", alcoholic: "Alkoholische Getränke", snacks: "Snacks" },
-  it: { title: "Minibar", note: "I consumi saranno addebitati alla sua camera.", softDrinks: "Bevande analcoliche", alcoholic: "Bevande alcoliche", snacks: "Snack" },
-  pt: { title: "Minibar", note: "Os consumos serão cobrados ao seu quarto.", softDrinks: "Bebidas sem álcool", alcoholic: "Bebidas alcoólicas", snacks: "Snacks" },
-  zh: { title: "迷你吧", note: "消费将计入您的房间账单。", softDrinks: "无酒精饮料", alcoholic: "含酒精饮料", snacks: "零食" },
-  ja: { title: "ミニバー", note: "ご利用料金はお部屋のご請求に加算されます。", softDrinks: "ノンアルコール飲料", alcoholic: "アルコール飲料", snacks: "スナック" },
-  ar: { title: "ميني بار", note: "سيتم إضافة الاستهلاك إلى فاتورة غرفتك.", softDrinks: "مشروبات غير كحولية", alcoholic: "مشروبات كحولية", snacks: "وجبات خفيفة" },
-  ru: { title: "Мини-бар", note: "Стоимость будет добавлена к счёту вашего номера.", softDrinks: "Безалкогольные напитки", alcoholic: "Алкогольные напитки", snacks: "Снеки" },
+  es: { title: "Minibar", note: "Los consumos se cargarán a su habitación.", drinks: "Bebidas", snacks: "Snacks" },
+  en: { title: "Minibar", note: "Charges will be added to your room bill.", drinks: "Drinks", snacks: "Snacks" },
+  fr: { title: "Minibar", note: "Les consommations seront facturées à votre chambre.", drinks: "Boissons", snacks: "Snacks" },
+  de: { title: "Minibar", note: "Die Kosten werden Ihrem Zimmer in Rechnung gestellt.", drinks: "Getränke", snacks: "Snacks" },
+  it: { title: "Minibar", note: "I consumi saranno addebitati alla sua camera.", drinks: "Bevande", snacks: "Snack" },
+  pt: { title: "Minibar", note: "Os consumos serão cobrados ao seu quarto.", drinks: "Bebidas", snacks: "Snacks" },
+  zh: { title: "迷你吧", note: "消费将计入您的房间账单。", drinks: "饮品", snacks: "零食" },
+  ja: { title: "ミニバー", note: "ご利用料金はお部屋のご請求に加算されます。", drinks: "ドリンク", snacks: "スナック" },
+  ar: { title: "ميني بار", note: "سيتم إضافة الاستهلاك إلى فاتورة غرفتك.", drinks: "مشروبات", snacks: "وجبات خفيفة" },
+  ru: { title: "Мини-бар", note: "Стоимость будет добавлена к счёту вашего номера.", drinks: "Напитки", snacks: "Снеки" },
 };
 
-// ── Product data ──────────────────────────────────────────────────────────────
-const SOFT_DRINKS = [
-  { name: "Coca Cola",              price: 5 },
-  { name: "Coca Cola Zero",         price: 5 },
-  { name: "Schweppes Naranja",      price: 5 },
-  { name: "Schweppes Limón",        price: 5 },
-  { name: "Schweppes Tónica",       price: 5 },
-  { name: "Cerveza Mahou Tostada 0,0", price: 5 },
-  { name: "Agua",                   price: 3 },
-  { name: "Agua con gas",           price: 3 },
-];
+const DRINKS_BY_LANG: Record<LangCode, { name: string; price: number }[]> = {
+  es: [
+    { name: "Refrescos",                      price: 5 },
+    { name: "Agua mineral con o sin gas",     price: 3 },
+    { name: "Cerveza con o sin alcohol",      price: 5 },
+    { name: "Ron, vodka, ginebra o whisky",   price: 9 },
+    { name: "Tío Pepe",                       price: 6 },
+    { name: "Cava Benjamín",                  price: 9 },
+  ],
+  en: [
+    { name: "Soft drinks",                    price: 5 },
+    { name: "Still or sparkling water",       price: 3 },
+    { name: "Beer (with or without alcohol)", price: 5 },
+    { name: "Rum, vodka, gin or whisky",      price: 9 },
+    { name: "Tío Pepe (sherry)",              price: 6 },
+    { name: "Cava Benjamín (sparkling wine)", price: 9 },
+  ],
+  fr: [
+    { name: "Sodas",                          price: 5 },
+    { name: "Eau minérale plate ou gazeuse",  price: 3 },
+    { name: "Bière (avec ou sans alcool)",    price: 5 },
+    { name: "Rhum, vodka, gin ou whisky",     price: 9 },
+    { name: "Tío Pepe (xerès)",              price: 6 },
+    { name: "Cava Benjamín (pétillant)",      price: 9 },
+  ],
+  de: [
+    { name: "Erfrischungsgetränke",           price: 5 },
+    { name: "Mineralwasser (still oder sprudelnd)", price: 3 },
+    { name: "Bier (mit oder ohne Alkohol)",   price: 5 },
+    { name: "Rum, Wodka, Gin oder Whisky",    price: 9 },
+    { name: "Tío Pepe (Sherry)",              price: 6 },
+    { name: "Cava Benjamín (Sekt)",           price: 9 },
+  ],
+  it: [
+    { name: "Bibite",                         price: 5 },
+    { name: "Acqua minerale liscia o frizzante", price: 3 },
+    { name: "Birra (con o senza alcol)",      price: 5 },
+    { name: "Rum, vodka, gin o whisky",       price: 9 },
+    { name: "Tío Pepe (sherry)",              price: 6 },
+    { name: "Cava Benjamín (spumante)",       price: 9 },
+  ],
+  pt: [
+    { name: "Refrigerantes",                  price: 5 },
+    { name: "Agua mineral com ou sem gás",    price: 3 },
+    { name: "Cerveja (com ou sem álcool)",    price: 5 },
+    { name: "Rum, vodka, gin ou whisky",      price: 9 },
+    { name: "Tío Pepe (jerez)",               price: 6 },
+    { name: "Cava Benjamín (espumante)",      price: 9 },
+  ],
+  zh: [
+    { name: "软饮",                          price: 5 },
+    { name: "矿泉水（有气或无气）",              price: 3 },
+    { name: "啤酒（含酒精或无酒精）",          price: 5 },
+    { name: "朗姆、伏特加、杜松子酒或威士忌",       price: 9 },
+    { name: "Tío Pepe（雪利酒）",              price: 6 },
+    { name: "Cava Benjamín（起泡酒）",          price: 9 },
+  ],
+  ja: [
+    { name: "ソフトドリンク",                   price: 5 },
+    { name: "ミネラルウォーター（炭酸あり・なし）",   price: 3 },
+    { name: "ビール（アルコールあり・なし）",       price: 5 },
+    { name: "ラム、ウォッカ、ジンまたはウイスキー",  price: 9 },
+    { name: "Tío Pepe（シェリー）",              price: 6 },
+    { name: "Cava Benjamín（スパークリング）",   price: 9 },
+  ],
+  ar: [
+    { name: "مشروبات غازية",                price: 5 },
+    { name: "مياه معدنية (فوارة أو عادية)",    price: 3 },
+    { name: "بيرة (كحولية أو خالية من الكحول)",  price: 5 },
+    { name: "روم أو فودكا أو جين أو ويسكي",   price: 9 },
+    { name: "Tío Pepe (خمر شيري)",          price: 6 },
+    { name: "Cava Benjamín (نبيذ فوار)",       price: 9 },
+  ],
+  ru: [
+    { name: "Безалкогольные напитки",          price: 5 },
+    { name: "Минеральная вода (газированная или нет)", price: 3 },
+    { name: "Пиво (алкогольное или безалкогольное)", price: 5 },
+    { name: "Ром, водка, джин или виски",  price: 9 },
+    { name: "Tío Pepe (херес)",              price: 6 },
+    { name: "Cava Benjamín (игристое)",       price: 9 },
+  ],
+};
 
-const ALCOHOLIC = [
-  { name: "Cerveza Mahou",          price: 5 },
-  { name: "Whisky",                 price: 9 },
-  { name: "Ron",                    price: 9 },
-  { name: "Vodka",                  price: 9 },
-  { name: "Ginebra",                price: 9 },
-  { name: "Tío Pepe",               price: 6 },
-  { name: "Cava Benjamín",          price: 9 },
-];
+const SNACKS_BY_LANG: Record<LangCode, { name: string; price: number }[]> = {
+  es: [
+    { name: "Patatas fritas",  price: 4 },
+    { name: "Frutos secos",   price: 7 },
+    { name: "Chocolate",      price: 6 },
+  ],
+  en: [
+    { name: "Crisps",         price: 4 },
+    { name: "Mixed nuts",     price: 7 },
+    { name: "Chocolate",      price: 6 },
+  ],
+  fr: [
+    { name: "Chips",          price: 4 },
+    { name: "Fruits secs",    price: 7 },
+    { name: "Chocolat",       price: 6 },
+  ],
+  de: [
+    { name: "Chips",          price: 4 },
+    { name: "Nüsse",          price: 7 },
+    { name: "Schokolade",     price: 6 },
+  ],
+  it: [
+    { name: "Patatine",       price: 4 },
+    { name: "Frutta secca",   price: 7 },
+    { name: "Cioccolato",     price: 6 },
+  ],
+  pt: [
+    { name: "Batatas fritas", price: 4 },
+    { name: "Frutos secos",   price: 7 },
+    { name: "Chocolate",      price: 6 },
+  ],
+  zh: [
+    { name: "薯片",             price: 4 },
+    { name: "坚果",             price: 7 },
+    { name: "巧克力",           price: 6 },
+  ],
+  ja: [
+    { name: "ポテトチップス",       price: 4 },
+    { name: "ミックスナッツ",       price: 7 },
+    { name: "チョコレート",         price: 6 },
+  ],
+  ar: [
+    { name: "رقائق البطاطس",      price: 4 },
+    { name: "مكسرات",          price: 7 },
+    { name: "شوكولاتة",         price: 6 },
+  ],
+  ru: [
+    { name: "Чипсы",           price: 4 },
+    { name: "Орехи",           price: 7 },
+    { name: "Шоколад",        price: 6 },
+  ],
+};
 
-const SNACKS = [
-  { name: "Patatas fritas",         price: 4 },
-  { name: "Frutos secos",           price: 7 },
-  { name: "Chocolate",              price: 6 },
-];
+interface Props { onBack: () => void; }
 
-// ── Styles ────────────────────────────────────────────────────────────────────
-const gold = "var(--gold, #C9A96E)";
-const bg = "#0A0A0A";
-const cardBg = "oklch(0.10 0.005 72)";
-const textCream = "oklch(0.88 0.015 85)";
-const textMuted = "oklch(0.55 0.015 85)";
-
-interface Props {
-  onBack: () => void;
+function ItemList({ items }: { items: { name: string; price: number }[] }) {
+  return (
+    <div
+      style={{
+        background: "var(--card)",
+        borderRadius: 6,
+        border: "1px solid var(--border)",
+        overflow: "hidden",
+      }}
+    >
+      {items.map((item, idx) => (
+        <div
+          key={item.name}
+          className="flex items-center justify-between px-5 py-3"
+          style={{
+            borderBottom: idx < items.length - 1 ? "1px solid var(--border)" : "none",
+          }}
+        >
+          <span style={{ ...ps.body, fontWeight: 300, fontSize: "0.9rem" }}>
+            {item.name}
+          </span>
+          <span
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              fontWeight: 400,
+              fontSize: "1.05rem",
+              color: "var(--gold)",
+              letterSpacing: "0.02em",
+              flexShrink: 0,
+              marginLeft: 12,
+            }}
+          >
+            {item.price} €
+          </span>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default function MinibarPage({ onBack }: Props) {
-  const { lang, t } = useLanguage();
+  const { lang } = useLanguage();
   const copy = COPY[lang] ?? COPY.es;
-  const isRtl = lang === "ar";
+  const drinks = DRINKS_BY_LANG[lang] ?? DRINKS_BY_LANG.es;
+  const snacks = SNACKS_BY_LANG[lang] ?? SNACKS_BY_LANG.es;
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: bg, color: textCream, direction: isRtl ? "rtl" : "ltr" }}
-    >
-      {/* ── Header ── */}
-      <header
-        className="relative flex flex-col items-center pt-5 pb-3 px-4"
-        style={{ borderBottom: `1px solid oklch(0.20 0.01 72)` }}
-      >
-        <div className={`absolute top-4 ${isRtl ? "left-4" : "right-4"}`}>
-          <LanguageSelector />
-        </div>
-        <div className={`absolute top-4 ${isRtl ? "right-4" : "left-4"}`}>
-          <BackButton onClick={onBack} />
-        </div>
-        <img
-          src={LOGO_BLANCO}
-          alt="La Fonda de los Príncipes"
-          style={{ height: 32, opacity: 0.85 }}
-        />
-      </header>
+    <PageLayout onBack={onBack}>
+      <PageTitle>{copy.title}</PageTitle>
 
-      {/* ── Content ── */}
-      <main className="flex-1 px-4 py-5 max-w-lg mx-auto w-full">
-        {/* Title */}
-        <h1
-          className="text-center mb-1"
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontWeight: 300,
-            fontSize: "clamp(1.6rem, 6vw, 2rem)",
-            color: textCream,
-            letterSpacing: "0.04em",
-          }}
-        >
-          {copy.title}
-        </h1>
+      <p style={{ ...ps.muted, textAlign: "center", marginBottom: "1.5rem" }}>
+        {copy.note}
+      </p>
 
-        {/* Gold divider */}
-        <div
-          className="mx-auto mb-4"
-          style={{
-            height: 1,
-            width: "40%",
-            background: `linear-gradient(90deg, transparent, ${gold}, transparent)`,
-          }}
-        />
+      {/* Bebidas */}
+      <div style={{ marginBottom: "1.5rem" }}>
+        <SectionLabel>{copy.drinks}</SectionLabel>
+        <ItemList items={drinks} />
+      </div>
 
-        {/* Note */}
-        <p
-          className="text-center mb-5"
-          style={{
-            fontFamily: "'DM Sans', sans-serif",
-            fontSize: "0.78rem",
-            color: textMuted,
-            letterSpacing: "0.03em",
-          }}
-        >
-          {copy.note}
-        </p>
-
-        {/* Categories */}
-        {[
-          { label: copy.softDrinks, items: SOFT_DRINKS },
-          { label: copy.alcoholic,  items: ALCOHOLIC },
-          { label: copy.snacks,     items: SNACKS },
-        ].map((cat) => (
-          <div key={cat.label} className="mb-6">
-            {/* Category header */}
-            <div className="flex items-center gap-3 mb-3">
-              <div style={{ flex: 1, height: 1, background: `oklch(0.22 0.01 72)` }} />
-              <span
-                style={{
-                  fontFamily: "'DM Sans', sans-serif",
-                  fontSize: "0.65rem",
-                  fontWeight: 500,
-                  color: gold,
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {cat.label}
-              </span>
-              <div style={{ flex: 1, height: 1, background: `oklch(0.22 0.01 72)` }} />
-            </div>
-
-            {/* Items */}
-            <div
-              style={{
-                background: cardBg,
-                borderRadius: 6,
-                border: `1px solid oklch(0.18 0.01 72)`,
-                overflow: "hidden",
-              }}
-            >
-              {cat.items.map((item, idx) => (
-                <div
-                  key={item.name}
-                  className="flex items-center justify-between px-4 py-3"
-                  style={{
-                    borderBottom: idx < cat.items.length - 1
-                      ? `1px solid oklch(0.16 0.008 72)`
-                      : "none",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontFamily: "'DM Sans', sans-serif",
-                      fontSize: "0.88rem",
-                      color: textCream,
-                      fontWeight: 300,
-                    }}
-                  >
-                    {item.name}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: "1rem",
-                      fontWeight: 400,
-                      color: gold,
-                      letterSpacing: "0.02em",
-                      flexShrink: 0,
-                      marginLeft: 12,
-                    }}
-                  >
-                    {item.price} €
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </main>
-    </div>
+      {/* Snacks */}
+      <div style={{ marginBottom: "1.5rem" }}>
+        <SectionLabel>{copy.snacks}</SectionLabel>
+        <ItemList items={snacks} />
+      </div>
+    </PageLayout>
   );
 }

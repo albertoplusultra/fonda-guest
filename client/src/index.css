@@ -1,8 +1,7 @@
 /*
  * DESIGN SYSTEM — La Fonda de los Príncipes
- * Philosophy: "Noche en Sol" — Dark Luxury Editorial
- * Movement: Art Deco Noir + Luxury Editorial
- * Palette: Deep black (#0A0A0A), gold (#C9A96E), cream (#F5EDD6), dark surface (#141414)
+ * Philosophy: Dual-theme — "Día en Sol" (light) / "Noche en Sol" (dark)
+ * Movement: Art Deco Luxury Editorial
  * Typography: Cormorant Garamond (serif display) + DM Sans (labels)
  */
 
@@ -39,11 +38,49 @@
   --color-cream: var(--cream);
 }
 
+/* ── LIGHT THEME (default / :root) ─────────────────────────────────────────── */
 :root {
   --radius: 0.25rem;
+  /* Gold: warm dark amber for light backgrounds */
+  --gold: oklch(0.52 0.09 60);
+  --gold-dim: oklch(0.42 0.07 60);
+  --cream: oklch(0.20 0.015 60);
+  /* Backgrounds */
+  --background: oklch(0.98 0.005 85);
+  --foreground: oklch(0.18 0.01 60);
+  --card: oklch(0.95 0.008 85);
+  --card-foreground: oklch(0.18 0.01 60);
+  --popover: oklch(0.97 0.005 85);
+  --popover-foreground: oklch(0.18 0.01 60);
+  --primary: oklch(0.52 0.09 60);
+  --primary-foreground: oklch(0.98 0.005 85);
+  --secondary: oklch(0.93 0.008 85);
+  --secondary-foreground: oklch(0.25 0.01 60);
+  --muted: oklch(0.93 0.008 85);
+  --muted-foreground: oklch(0.42 0.01 60);
+  --accent: oklch(0.52 0.09 60);
+  --accent-foreground: oklch(0.98 0.005 85);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.82 0.015 72);
+  --input: oklch(0.82 0.015 72);
+  --ring: oklch(0.52 0.09 60);
+  /* Tile hover */
+  --tile-hover-bg: oklch(0.90 0.04 72 / 0.6);
+  --tile-hover-border: oklch(0.52 0.09 60);
+  --tile-hover-shadow: oklch(0.52 0.09 60 / 0.15);
+  /* Dropdown */
+  --dropdown-bg: oklch(0.97 0.005 85);
+  --dropdown-border: oklch(0.82 0.015 72);
+}
+
+/* ── DARK THEME (.dark class on <html>) ─────────────────────────────────────── */
+.dark {
+  /* Gold: warm bright amber for dark backgrounds */
   --gold: oklch(0.72 0.09 72);
   --gold-dim: oklch(0.55 0.07 72);
   --cream: oklch(0.96 0.025 85);
+  /* Backgrounds */
   --background: oklch(0.08 0 0);
   --foreground: oklch(0.96 0.025 85);
   --card: oklch(0.11 0 0);
@@ -63,6 +100,13 @@
   --border: oklch(0.22 0.015 72);
   --input: oklch(0.22 0.015 72);
   --ring: oklch(0.72 0.09 72);
+  /* Tile hover */
+  --tile-hover-bg: oklch(0.14 0.04 72 / 0.6);
+  --tile-hover-border: oklch(0.72 0.09 72);
+  --tile-hover-shadow: oklch(0.72 0.09 72 / 0.15);
+  /* Dropdown */
+  --dropdown-bg: oklch(0.13 0 0);
+  --dropdown-border: oklch(0.22 0.015 72);
 }
 
 @layer base {
@@ -74,6 +118,7 @@
     font-family: 'DM Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -155,16 +200,16 @@
 
   .service-tile:hover,
   .service-tile:active {
-    background-color: oklch(0.14 0.04 72 / 0.6);
-    border-color: oklch(0.72 0.09 72);
+    background-color: var(--tile-hover-bg);
+    border-color: var(--tile-hover-border);
     transform: scale(1.025);
-    box-shadow: 0 0 18px oklch(0.72 0.09 72 / 0.15);
+    box-shadow: 0 0 18px var(--tile-hover-shadow);
   }
 
   /* Dropdown styling */
   .lang-dropdown {
-    background: oklch(0.13 0 0);
-    border: 1px solid oklch(0.22 0.015 72);
+    background: var(--dropdown-bg);
+    border: 1px solid var(--dropdown-border);
     border-radius: 4px;
   }
 }

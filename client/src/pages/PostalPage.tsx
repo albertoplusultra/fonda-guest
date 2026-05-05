@@ -2,12 +2,10 @@
  * PostalPage — "Noche en Sol" design
  * Invitación a rellenar la postal y entregarla en recepción para que el hotel la envíe
  */
-import { Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import BackButton from "@/components/BackButton";
-import LanguageSelector from "@/components/LanguageSelector";
-
-const LOGO_BLANCO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663400946394/Zow2LjuuZ5FiZzmS8gH7BA/logo-blanco-hd_6b7412e4.png";
+import PageLayout from "@/components/PageLayout";
+import PageTitle from "@/components/PageTitle";
+import { ps } from "@/lib/pageStyles";
 
 interface PostalPageProps {
   onBack: () => void;
@@ -15,16 +13,16 @@ interface PostalPageProps {
 
 const CONTENT: Record<string, { title: string; body: string[] }> = {
   es: {
-    title: "Tu postal",
+    title: "Envía una postal",
     body: [
       "La Fonda de los Príncipes es un alojamiento con historia. Estas paredes han sido testigo de viajeros de todo el mundo que, durante siglos, encontraron aquí un lugar donde descansar antes de seguir su camino.",
       "En aquellos tiempos, la forma de compartir un viaje era enviando una postal a los seres queridos. Una imagen, unas pocas palabras escritas a mano y un sello eran suficientes para hacer llegar un pedazo de Madrid a cualquier rincón del mundo.",
       "El mundo ha cambiado. La mensajería instantánea ha sustituido al correo postal, y las fotos en el móvil han reemplazado a las postales ilustradas. Pero en La Fonda nos gusta recuperar las tradiciones.",
-      "Por eso hemos dejado una postal en su cama. Escríbala, dedíquela a quien quiera y entréguela en recepción. Nosotros nos encargamos de enviarla.",
+      "Por eso hemos dejado una postal en tu cama. Escríbela, dedícala a quien quieras y entrégala en recepción. Nosotros nos encargamos de enviarla.",
     ],
   },
   en: {
-    title: "Your postcard",
+    title: "Send a postcard",
     body: [
       "La Fonda de los Príncipes is a place steeped in history. These walls have witnessed travellers from all over the world who, for centuries, found here a place to rest before continuing their journey.",
       "In those days, the way to share a trip was by sending a postcard to loved ones. An image, a few handwritten words and a stamp were enough to bring a piece of Madrid to any corner of the world.",
@@ -33,7 +31,7 @@ const CONTENT: Record<string, { title: string; body: string[] }> = {
     ],
   },
   fr: {
-    title: "Votre carte postale",
+    title: "Envoyez une carte postale",
     body: [
       "La Fonda de los Príncipes est un hébergement chargé d'histoire. Ces murs ont été témoins de voyageurs du monde entier qui, pendant des siècles, ont trouvé ici un endroit où se reposer avant de poursuivre leur chemin.",
       "À cette époque, la façon de partager un voyage était d'envoyer une carte postale à ses proches. Une image, quelques mots écrits à la main et un timbre suffisaient pour apporter un morceau de Madrid à n'importe quel coin du monde.",
@@ -42,7 +40,7 @@ const CONTENT: Record<string, { title: string; body: string[] }> = {
     ],
   },
   de: {
-    title: "Ihre Postkarte",
+    title: "Senden Sie eine Postkarte",
     body: [
       "La Fonda de los Príncipes ist eine Unterkunft mit Geschichte. Diese Wände haben Reisende aus aller Welt erlebt, die hier jahrhundertelang einen Ort zum Ausruhen fanden, bevor sie ihre Reise fortsetzten.",
       "Damals war es üblich, Reiseerlebnisse durch das Versenden einer Postkarte an die Liebsten zu teilen. Ein Bild, ein paar handgeschriebene Worte und eine Briefmarke reichten aus, um ein Stück Madrid in jeden Winkel der Welt zu bringen.",
@@ -51,7 +49,7 @@ const CONTENT: Record<string, { title: string; body: string[] }> = {
     ],
   },
   it: {
-    title: "La tua cartolina",
+    title: "Invia una cartolina",
     body: [
       "La Fonda de los Príncipes è un alloggio ricco di storia. Queste mura hanno visto viaggiatori da tutto il mondo che, per secoli, hanno trovato qui un luogo dove riposarsi prima di continuare il loro cammino.",
       "In quei tempi, il modo di condividere un viaggio era inviare una cartolina ai propri cari. Un'immagine, poche parole scritte a mano e un francobollo erano sufficienti per portare un pezzo di Madrid in qualsiasi angolo del mondo.",
@@ -60,7 +58,7 @@ const CONTENT: Record<string, { title: string; body: string[] }> = {
     ],
   },
   pt: {
-    title: "O seu postal",
+    title: "Envie um postal",
     body: [
       "La Fonda de los Príncipes é um alojamento com história. Estas paredes foram testemunhas de viajantes de todo o mundo que, durante séculos, encontraram aqui um lugar para descansar antes de continuar a sua jornada.",
       "Naqueles tempos, a forma de partilhar uma viagem era enviar um postal aos entes queridos. Uma imagem, algumas palavras escritas à mão e um selo eram suficientes para levar um pedaço de Madrid a qualquer canto do mundo.",
@@ -69,7 +67,7 @@ const CONTENT: Record<string, { title: string; body: string[] }> = {
     ],
   },
   zh: {
-    title: "您的明信片",
+    title: "寄一张明信片",
     body: [
       "La Fonda de los Príncipes是一处承载历史的住所。几个世纪以来，来自世界各地的旅行者在这些墙壁之间找到了歇脚之所，然后继续他们的旅途。",
       "在那个年代，分享旅行的方式是向亲友寄送一张明信片。一幅图像、几行手写的文字和一枚邮票，就足以将马德里的一角送达世界任何地方。",
@@ -78,7 +76,7 @@ const CONTENT: Record<string, { title: string; body: string[] }> = {
     ],
   },
   ja: {
-    title: "あなたのポストカード",
+    title: "ポストカードを送る",
     body: [
       "La Fonda de los Príncipesは、歴史を宿す宿泊施設です。何世紀にもわたり、世界中の旅人がここで旅の疲れを癒し、次の目的地へと向かっていきました。",
       "かつて旅を分かち合う方法は、大切な人へポストカードを送ることでした。一枚の絵、手書きの言葉、そして切手があれば、マドリードの一片を世界のどこへでも届けることができました。",
@@ -87,7 +85,7 @@ const CONTENT: Record<string, { title: string; body: string[] }> = {
     ],
   },
   ar: {
-    title: "بطاقتك البريدية",
+    title: "أرسل بطاقة بريدية",
     body: [
       "La Fonda de los Príncipes مكان إقامة يحمل تاريخاً عريقاً. شهدت هذه الجدران عبر القرون مسافرين من شتى أنحاء العالم وجدوا هنا مكاناً للراحة قبل مواصلة رحلتهم.",
       "في تلك الأيام، كانت طريقة مشاركة السفر هي إرسال بطاقة بريدية إلى الأحبة. صورة وبضع كلمات مكتوبة بخط اليد وطابع بريدي كانت كافية لإيصال قطعة من مدريد إلى أي ركن من أركان العالم.",
@@ -96,7 +94,7 @@ const CONTENT: Record<string, { title: string; body: string[] }> = {
     ],
   },
   ru: {
-    title: "Ваша открытка",
+    title: "Отправьте открытку",
     body: [
       "La Fonda de los Príncipes — это место с историей. На протяжении веков эти стены принимали путешественников со всего мира, которые находили здесь отдых перед продолжением пути.",
       "В те времена способом поделиться путешествием была отправка открытки близким. Картинка, несколько слов, написанных от руки, и марка — этого было достаточно, чтобы донести частичку Мадрида в любой уголок мира.",
@@ -111,65 +109,8 @@ export default function PostalPage({ onBack }: PostalPageProps) {
   const content = CONTENT[lang] ?? CONTENT["es"];
 
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "oklch(0.08 0 0)", maxWidth: 480, margin: "0 auto" }}
-    >
-      {/* Header */}
-      <header
-        className="flex items-center justify-between px-5 pt-8 pb-4"
-        style={{ borderBottom: "1px solid oklch(0.16 0.01 72)" }}
-      >
-        <BackButton onClick={onBack} />
-        <img
-          src={LOGO_BLANCO}
-          alt="La Fonda de los Príncipes"
-          className="h-8"
-          style={{ opacity: 0.85 }}
-        />
-        <LanguageSelector />
-      </header>
-
-      {/* Content */}
-      <main className="flex-1 px-6 pt-10 pb-12">
-        {/* Icon + Title */}
-        <div className="flex items-start gap-4 mb-6">
-          <div
-            style={{
-              background: "oklch(0.11 0 0)",
-              border: "1px solid oklch(0.22 0.015 72)",
-              borderRadius: "0.35rem",
-              padding: "0.6rem",
-              flexShrink: 0,
-              marginTop: "0.2rem",
-            }}
-          >
-            <Mail size={20} strokeWidth={1.25} style={{ color: "var(--gold)" }} />
-          </div>
-          <h1
-            style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontWeight: 300,
-              fontSize: "clamp(1.8rem, 6vw, 2.4rem)",
-              color: "oklch(0.96 0.025 85)",
-              lineHeight: 1.15,
-              letterSpacing: "-0.01em",
-              margin: 0,
-            }}
-          >
-            {content.title}
-          </h1>
-        </div>
-
-        {/* Gold divider */}
-        <div
-          className="mb-8"
-          style={{
-            height: 1,
-            background: "linear-gradient(90deg, var(--gold), transparent)",
-            width: "60%",
-          }}
-        />
+    <PageLayout onBack={onBack}>
+        <PageTitle>{content.title}</PageTitle>
 
         {/* Body paragraphs */}
         <div className="flex flex-col gap-5">
@@ -180,7 +121,7 @@ export default function PostalPage({ onBack }: PostalPageProps) {
                 fontFamily: "'DM Sans', sans-serif",
                 fontWeight: 300,
                 fontSize: "0.93rem",
-                color: "oklch(0.68 0.015 85)",
+                color: "var(--muted-foreground)",
                 lineHeight: 1.75,
                 margin: 0,
               }}
@@ -194,8 +135,8 @@ export default function PostalPage({ onBack }: PostalPageProps) {
         <div
           className="mt-10 px-5 py-5 rounded-sm"
           style={{
-            background: "oklch(0.11 0 0)",
-            border: "1px solid oklch(0.22 0.015 72)",
+            background: "var(--card)",
+            border: "1px solid var(--border)",
           }}
         >
           <div className="flex items-center gap-2 mb-2">
@@ -211,7 +152,7 @@ export default function PostalPage({ onBack }: PostalPageProps) {
               style={{
                 fontFamily: "'DM Sans', sans-serif",
                 fontWeight: 300,
-                fontSize: "0.6rem",
+                fontSize: "0.88rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
                 color: "var(--gold)",
@@ -235,7 +176,7 @@ export default function PostalPage({ onBack }: PostalPageProps) {
               fontFamily: "'DM Sans', sans-serif",
               fontWeight: 300,
               fontSize: "0.88rem",
-              color: "oklch(0.72 0.015 85)",
+              color: "var(--muted-foreground)",
               lineHeight: 1.65,
               margin: 0,
             }}
@@ -253,7 +194,6 @@ export default function PostalPage({ onBack }: PostalPageProps) {
              "Entrega la postal en recepción y nosotros nos encargamos del resto."}
           </p>
         </div>
-      </main>
-    </div>
+    </PageLayout>
   );
 }
