@@ -707,7 +707,7 @@ const CONTENT: Record<string, ServiciosContent> = {
         iconKey: "pillow",
         heading: "枕头",
         paragraphs: [
-          "我们提供不同类型的果子以满足您的偏好。如果您想更换房间里的果子，请联系前台，我们会为您送去。",
+          "我们提供不同类型的枕头以满足您的偏好。如果您想更换房间里的枕头，请联系前台，我们会为您送去。",
         ],
         inlineLink: "联系前台",
       },
@@ -774,7 +774,7 @@ const CONTENT: Record<string, ServiciosContent> = {
         iconKey: "alarm",
         heading: "モーニングコール",
         paragraphs: [
-          "ゴ希望の時刻にモーニングコールをご希望の場合は、フロントにお問い合わせください。喜んで対応いたします。",
+          "ご希望の時刻にモーニングコールをご希望の場合は、フロントにお問い合わせください。喜んで対応いたします。",
         ],
         inlineLink: "フロントにお問い合わせください",
       },
@@ -807,7 +807,7 @@ const CONTENT: Record<string, ServiciosContent> = {
         iconKey: "pillow",
         heading: "枕",
         paragraphs: [
-          "お好みに合わせてさまざまな種類の枚をご用意しています。枚を交換ご希望の場合は、フロントにお問い合わせください。",
+          "お好みに合わせてさまざまな種類の枕をご用意しています。枕を交換ご希望の場合は、フロントにお問い合わせください。",
         ],
         inlineLink: "フロントにお問い合わせください",
       },
