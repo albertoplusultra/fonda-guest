@@ -24,7 +24,6 @@ interface TransporteContent {
   fromHotel: string;
   sections: TransportSection[];
   tips: { title: string; items: string[] };
-  apps: { title: string; items: string[] };
 }
 
 const ICON_SIZE = 18;
@@ -126,10 +125,6 @@ function buildContent(lang: string): TransporteContent {
           "La Tarjeta Multi cuesta 2,50 € pero dura 10 años. Guárdala para tu próxima visita.",
         ],
       },
-      apps: {
-        title: "Apps útiles",
-        items: ["Citymapper — rutas en tiempo real", "Moovit — horarios y paradas", "Google Maps — funciona perfectamente en Madrid", "FreeNow (MyTaxi) — taxis oficiales"],
-      },
     },
     en: {
       title: "Getting Around Madrid",
@@ -223,10 +218,6 @@ function buildContent(lang: string): TransporteContent {
           "From Sol you can walk to many places: Retiro (20 min), Prado (15 min), El Rastro (15 min).",
           "The Tarjeta Multi costs €2.50 but lasts 10 years. Keep it for your next visit.",
         ],
-      },
-      apps: {
-        title: "Useful apps",
-        items: ["Citymapper — real-time routes", "Moovit — timetables and stops", "Google Maps — works perfectly in Madrid", "FreeNow (MyTaxi) — official taxis"],
       },
     },
     fr: {
@@ -322,10 +313,6 @@ function buildContent(lang: string): TransporteContent {
           "La Tarjeta Multi coûte 2,50 € mais dure 10 ans. Gardez-la pour votre prochaine visite.",
         ],
       },
-      apps: {
-        title: "Applications utiles",
-        items: ["Citymapper — itinéraires en temps réel", "Moovit — horaires et arrêts", "Google Maps — fonctionne parfaitement à Madrid", "FreeNow — taxis officiels"],
-      },
     },
     de: {
       title: "Durch Madrid bewegen",
@@ -419,10 +406,6 @@ function buildContent(lang: string): TransporteContent {
           "Von Sol aus können Sie zu vielen Orten laufen: Retiro (20 min), Prado (15 min).",
           "Die Tarjeta Multi kostet 2,50 € und hält 10 Jahre. Behalten Sie sie für Ihren nächsten Besuch.",
         ],
-      },
-      apps: {
-        title: "Nützliche Apps",
-        items: ["Citymapper — Echtzeit-Routen", "Moovit — Fahrpläne und Haltestellen", "Google Maps — funktioniert perfekt in Madrid", "FreeNow — offizielle Taxis"],
       },
     },
     it: {
@@ -518,10 +501,6 @@ function buildContent(lang: string): TransporteContent {
           "La Tarjeta Multi costa 2,50 € ma dura 10 anni. Conservala per la prossima visita.",
         ],
       },
-      apps: {
-        title: "App utili",
-        items: ["Citymapper — percorsi in tempo reale", "Moovit — orari e fermate", "Google Maps — funziona perfettamente a Madrid", "FreeNow — taxi ufficiali"],
-      },
     },
     pt: {
       title: "Mover-se por Madrid",
@@ -615,10 +594,6 @@ function buildContent(lang: string): TransporteContent {
           "De Sol pode caminhar até muitos sítios: Retiro (20 min), Prado (15 min), El Rastro (15 min).",
           "A Tarjeta Multi custa 2,50 € mas dura 10 anos. Guarde-a para a próxima visita.",
         ],
-      },
-      apps: {
-        title: "Apps úteis",
-        items: ["Citymapper — rotas em tempo real", "Moovit — horários e paragens", "Google Maps — funciona perfeitamente em Madrid", "FreeNow — táxis oficiais"],
       },
     },
     zh: {
@@ -714,10 +689,6 @@ function buildContent(lang: string): TransporteContent {
           "Tarjeta Multi交通卡售价2.50欧元，有效期10年。请保留以备下次访问使用。",
         ],
       },
-      apps: {
-        title: "实用应用",
-        items: ["Citymapper — 实时路线", "Moovit — 时刻表和站点", "Google Maps — 在马德里完美运行", "FreeNow — 官方出租车"],
-      },
     },
   };
   return content[lang] || content.es;
@@ -769,18 +740,6 @@ export default function TransportePage({ onBack }: TransportePageProps) {
         </InfoCard>
       </div>
 
-      <div>
-        <SectionLabel>{c.apps.title}</SectionLabel>
-        <InfoCard>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem" }}>
-            {c.apps.items.map((item, index) => (
-              <div key={index} style={{ ...ps.body, background: "var(--inner-background)", border: "1px solid var(--border)", borderRadius: "0.35rem", padding: "0.4rem 0.8rem", fontSize: "0.85rem" }}>
-                {item}
-              </div>
-            ))}
-          </div>
-        </InfoCard>
-      </div>
     </PageLayout>
   );
 }
