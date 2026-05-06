@@ -41,7 +41,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "Horario",
     scheduleRows: [
       { days: "Lun – Vie",          time: "07:00 – 10:30" },
-      { days: "Sáb, Dom y festivos", time: "07:00 – 11:00" },
+      { days: "Sáb, Dom y festivos", time: "08:00 – 11:00" },
     ],
     priceLabel: "Precio",
     price: "25 €",
@@ -70,7 +70,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "Hours",
     scheduleRows: [
       { days: "Mon – Fri",            time: "7:00 – 10:30 AM" },
-      { days: "Sat, Sun & holidays",  time: "7:00 – 11:00 AM" },
+      { days: "Sat, Sun & holidays",  time: "8:00 – 11:00 AM" },
     ],
     priceLabel: "Price",
     price: "25 €",
@@ -99,7 +99,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "Horaires",
     scheduleRows: [
       { days: "Lun – Ven",                time: "7h00 – 10h30" },
-      { days: "Sam, Dim & fériés",       time: "7h00 – 11h00" },
+      { days: "Sam, Dim & fériés",       time: "8h00 – 11h00" },
     ],
     priceLabel: "Prix",
     price: "25 €",
@@ -128,7 +128,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "Öffnungszeiten",
     scheduleRows: [
       { days: "Mo – Fr",              time: "7:00 – 10:30 Uhr" },
-      { days: "Sa, So & Feiertage",  time: "7:00 – 11:00 Uhr" },
+      { days: "Sa, So & Feiertage",  time: "8:00 – 11:00 Uhr" },
     ],
     priceLabel: "Preis",
     price: "25 €",
@@ -157,7 +157,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "Orario",
     scheduleRows: [
       { days: "Lun – Ven",          time: "7:00 – 10:30" },
-      { days: "Sab, Dom e festivi", time: "7:00 – 11:00" },
+      { days: "Sab, Dom e festivi", time: "8:00 – 11:00" },
     ],
     priceLabel: "Prezzo",
     price: "25 €",
@@ -186,7 +186,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "Horário",
     scheduleRows: [
       { days: "Seg – Sex",             time: "7h00 – 10h30" },
-      { days: "Sáb, Dom e feriados", time: "7h00 – 11h00" },
+      { days: "Sáb, Dom e feriados", time: "8h00 – 11h00" },
     ],
     priceLabel: "Preço",
     price: "25 €",
@@ -215,7 +215,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "时间",
     scheduleRows: [
       { days: "周一至周五",   time: "7:00 – 10:30" },
-      { days: "周六、日及节假日",   time: "7:00 – 11:00" },
+      { days: "周六、日及节假日",   time: "8:00 – 11:00" },
     ],
     priceLabel: "价格",
     price: "25 €",
@@ -244,7 +244,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "時間",
     scheduleRows: [
       { days: "月曜〜金曜",   time: "7:00 – 10:30" },
-      { days: "土・日・祝日",       time: "7:00 – 11:00" },
+      { days: "土・日・祝日",       time: "8:00 – 11:00" },
     ],
     priceLabel: "料金",
     price: "25 €",
@@ -273,7 +273,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "الوقت",
     scheduleRows: [
       { days: "الإثنين – الجمعة",  time: "7:00 – 10:30" },
-      { days: "السبت والأحد والعطل", time: "7:00 – 11:00" },
+      { days: "السبت والأحد والعطل", time: "8:00 – 11:00" },
     ],
     priceLabel: "السعر",
     price: "25 €",
@@ -302,7 +302,7 @@ const CONTENT: Record<string, DesayunoContent> = {
     scheduleLabel: "Время",
     scheduleRows: [
       { days: "Пн – Пт",           time: "7:00 – 10:30" },
-      { days: "Сб, Вс и праздники", time: "7:00 – 11:00" },
+      { days: "Сб, Вс и праздники", time: "8:00 – 11:00" },
     ],
     priceLabel: "Цена",
     price: "25 €",
